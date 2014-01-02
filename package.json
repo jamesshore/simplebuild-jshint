@@ -1,0 +1,23 @@
+{
+  "name": "simplebuild-jshint",
+  "version": "0.0.0",
+  "description": "A Simplebuild module for JSHint",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamesshore/simplebuild-jshint"
+  },
+  "keywords": [
+    "simplebuild",
+    "jshint"
+  ],
+  "author": "James Shore",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamesshore/simplebuild-jshint/issues"
+  },
+  "homepage": "https://github.com/jamesshore/simplebuild-jshint"
+}
