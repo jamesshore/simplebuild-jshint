@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/jamesshore/simplebuild-jshint/issues"
   },
-  "homepage": "https://github.com/jamesshore/simplebuild-jshint"
+  "homepage": "https://github.com/jamesshore/simplebuild-jshint",
+  "devDependencies": {
+    "jshint": "~2.4.0"
+  }
 }
