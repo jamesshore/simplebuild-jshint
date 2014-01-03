@@ -8,7 +8,7 @@ exports.validateSource = function(sourceCode, options, globals, description) {
 	description = description ? description + " " : "";
 	var pass = jshint(sourceCode, options, globals);
 	if (!pass) {
-		console.log(description + "failed");
+		console.log("\n" + description + "failed");
 		jshint.errors.forEach(function(error) {
 			console.log(error.line + ": " + error.evidence.trim());
 			console.log("   " + error.reason);
@@ -29,5 +29,6 @@ exports.validateFileList = function(fileList, options, globals) {
 		var sourceCode = fs.readFileSync(filename, "utf8");
 		pass = exports.validateSource(sourceCode, options, globals, filename) && pass;
 	});
+	process.stdout.write("\n");
 	return pass;
 };

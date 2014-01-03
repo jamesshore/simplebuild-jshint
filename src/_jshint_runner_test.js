@@ -114,7 +114,7 @@ describe("File list validation", function() {
 		inspectStdout(function(output) {
 			writeTestFiles("var a=1;", "var b=1;", "var c=1;");
 			lint.validateFileList(testFiles);
-			expect(output).to.eql([".", ".", "."]);
+			expect(output).to.eql([".", ".", ".", "\n"]);
 		});
 	});
 
@@ -123,7 +123,7 @@ describe("File list validation", function() {
 			writeTestFiles("YARR=1", "var b=1;", "var c=1;");
 			lint.validateFileList(testFiles);
 			expect(output[0]).to.eql(".");
-			expect(output[1]).to.eql(testFiles[0] + " failed\n");
+			expect(output[1]).to.eql("\n" + testFiles[0] + " failed\n");
 			expect(output[4]).to.eql(".");
 			expect(output[5]).to.eql(".");
 		});
@@ -140,8 +140,8 @@ describe("Error reporting", function() {
 
 	it("should include optional description", function() {
 		inspectStdout(function(output) {
-			lint.validateSource("foo;", {}, {}, "code B");
-			expect(output[0]).to.eql("code B failed\n");
+			lint.validateSource("foo;", {}, {}, "(description)");
+			expect(output[0]).to.eql("\n(description) failed\n");
 		});
 	});
 
@@ -149,9 +149,9 @@ describe("Error reporting", function() {
 		inspectStdout(function(output) {
 			lint.validateSource("foo;");
 			expect(output).to.eql([
-				"failed\n",
+				"\nfailed\n",
 				"1: foo;\n",
-				"   Expected an assignment or function call and instead saw an expression.\n"
+				"   Expected an assignment or function call and instead saw an expression.\n",
 			]);
 		});
 	});
@@ -160,7 +160,7 @@ describe("Error reporting", function() {
 		inspectStdout(function(output) {
 			lint.validateSource("foo;\nbar()");
 			expect(output).to.eql([
-				"failed\n",
+				"\nfailed\n",
 				"1: foo;\n",
 				"   Expected an assignment or function call and instead saw an expression.\n",
 				"2: bar()\n",
