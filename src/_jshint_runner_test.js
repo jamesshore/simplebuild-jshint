@@ -8,7 +8,7 @@ var assert = require("assert");
 var fs = require("fs");
 
 var lint = require("./jshint_runner.js");
-var testDir = "build/temp_files/";
+var testDir = "temp_files/";
 
 // console inspection code inspired by http://userinexperience.com/?p=714
 function TestConsole(newFunction) {
