@@ -17,11 +17,6 @@ exports.validateSource = function(sourceCode, options, globals, description) {
 	return pass;
 };
 
-exports.validateFile = function(filename, options, globals) {
-	var sourceCode = fs.readFileSync(filename, "utf8");
-	return exports.validateSource(sourceCode, options, globals, filename);
-};
-
 exports.validateFileList = function(fileList, options, globals) {
 	var pass = true;
 	fileList.forEach(function(filename) {
