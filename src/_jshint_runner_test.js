@@ -11,41 +11,41 @@ var lint = require("./jshint_runner.js");
 var testDir = "temp_files/";
 
 // console inspection code inspired by http://userinexperience.com/?p=714
-function TestConsole(newFunction) {
+function TestStdout(newFunction) {
 	var original;
 	this.redirect = function(newFunction) {
-		assert.ok(!original, "Console already redirected");
-		original = console.log;
-		console.log = newFunction;
+		assert.ok(!original, "Stdout already redirected");
+		original = process.stdout.write;
+		process.stdout.write = newFunction;
 	};
 	this.ignore = function() {
 		this.redirect(function() {});
 	};
 	this.restore = function() {
-		assert.ok(original, "Console not redirected");
-		console.log = original;
+		assert.ok(original, "Stdout not redirected");
+		process.stdout.write = original;
 		original = null;
 	};
 }
 
-function inspectConsole(test) {
+function inspectStdout(test) {
 	var output = [];
-	var console = new TestConsole();
-	console.redirect(function(string) {
+	var stdout = new TestStdout();
+	stdout.redirect(function(string) {
 		output.push(string);
 	});
 	test(output);
-	console.restore();
+	stdout.restore();
 }
 
-var testConsole = new TestConsole();
+var testStdout = new TestStdout();
 
 beforeEach(function() {
-	testConsole.ignore();
+	testStdout.ignore();
 });
 
 afterEach(function() {
-	testConsole.restore();
+	testStdout.restore();
 });
 
 
@@ -110,76 +110,72 @@ describe("File list validation", function() {
 		expect(lint.validateFileList(testFiles)).to.be(false);
 	});
 
-	it("should report filenames", function() {
-		inspectConsole(function(output) {
+	it.skip("should report one dot per file", function() {
+		inspectStdout(function(output) {
 			writeTestFiles("var a=1;", "var b=1;", "var c=1;");
 			lint.validateFileList(testFiles);
-			expect(output).to.eql([
-				testFiles[0] + " ok",
-				testFiles[1] + " ok",
-				testFiles[2] + " ok"
-			]);
+			expect(output).to.eql(["..."]);
 		});
 	});
 
 	it("should validate later files even if early file fails", function() {
-		inspectConsole(function(output) {
+		inspectStdout(function(output) {
 			writeTestFiles("YARR=1", "var b=1;", "var c=1;");
 			lint.validateFileList(testFiles);
-			expect(output[0]).to.eql(testFiles[0] + " failed");
-			expect(output[3]).to.eql(testFiles[1] + " ok");
-			expect(output[4]).to.eql(testFiles[2] + " ok");
+			expect(output[0]).to.eql(testFiles[0] + " failed\n");
+			expect(output[3]).to.eql(testFiles[1] + " ok\n");
+			expect(output[4]).to.eql(testFiles[2] + " ok\n");
 		});
 	});
 });
 
 describe("Error reporting", function() {
 	it("should say 'ok' on pass", function() {
-		inspectConsole(function(output) {
+		inspectStdout(function(output) {
 			lint.validateSource("");
-			expect(output).to.eql(["ok"]);
+			expect(output).to.eql(["ok\n"]);
 		});
 	});
 
 	it("should report errors on failure", function() {
-		inspectConsole(function(output) {
+		inspectStdout(function(output) {
 			lint.validateSource("foo;");
 			expect(output).to.eql([
-				"failed",
-				"1: foo;",
-				"   Expected an assignment or function call and instead saw an expression."
+				"failed\n",
+				"1: foo;\n",
+				"   Expected an assignment or function call and instead saw an expression.\n"
 			]);
 		});
 	});
 
 	it("should report all errors", function() {
-		inspectConsole(function(output) {
+		inspectStdout(function(output) {
 			lint.validateSource("foo;\nbar()");
 			expect(output).to.eql([
-				"failed",
-				"1: foo;",
-				"   Expected an assignment or function call and instead saw an expression.",
-				"2: bar()",
-				"   Missing semicolon."
+				"failed\n",
+				"1: foo;\n",
+				"   Expected an assignment or function call and instead saw an expression.\n",
+				"2: bar()\n",
+				"   Missing semicolon.\n"
 			]);
 		});
 	});
 
 	it("should trim whitespace from source code", function() {
-		inspectConsole(function(output) {
+		inspectStdout(function(output) {
 			lint.validateSource("   foo()\t \n");
-			expect(output[1]).to.eql("1: foo()");
+			expect(output[1]).to.eql("1: foo()\n");
 		});
 	});
 
 	it("should include optional description", function() {
-		inspectConsole(function(output) {
+		inspectStdout(function(output) {
 			lint.validateSource("", {}, {}, "code A");
-			expect(output[0]).to.eql("code A ok");
+			expect(output[0]).to.eql("code A ok\n");
 		});
-		inspectConsole(function(output) {
+		inspectStdout(function(output) {
 			lint.validateSource("foo;", {}, {}, "code B");
-			expect(output[0]).to.eql("code B failed");
+			expect(output[0]).to.eql("code B failed\n");
 		});
 	});
 
