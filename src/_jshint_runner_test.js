@@ -7,7 +7,7 @@ var expect = require("expect.js");
 var assert = require("assert");
 var fs = require("fs");
 
-var lint = require("./jshint/jshint_runner.js");
+var lint = require("./jshint_runner.js");
 var testDir = "build/temp_files/";
 
 // console inspection code inspired by http://userinexperience.com/?p=714

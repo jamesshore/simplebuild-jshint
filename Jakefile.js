@@ -3,9 +3,10 @@
 "use strict";
 
 var lint = require("./src/jshint_runner.js");
+var Mocha = require("mocha");
 
 desc("Validate code (lint and test)");
-task("default", ["lint"], function() {
+task("default", ["lint", "test"], function() {
 	console.log("\n\nOK");
 });
 
@@ -14,6 +15,21 @@ task("lint", function() {
 	var passed = lint.validateFileList(lintFiles(), lintOptions(), {});
 	if (!passed) fail("Lint failed");
 });
+
+desc("Run tests");
+task("test", [], function() {
+	var mocha = new Mocha({ui: "bdd"});
+	mocha.addFile("src/_jshint_runner_test.js");
+
+	var failures = false;
+	mocha.run()
+	.on("fail", function() {
+		failures = true;
+	}).on("end", function() {
+		if (failures) fail("Tests failed");
+		complete();
+	});
+}, {async: true});
 
 function lintFiles() {
 	var javascriptFiles = new jake.FileList();
