@@ -67,42 +67,6 @@ describe("Source code validation", function() {
 	});
 });
 
-describe("File validation", function() {
-	var testFile = testDir + "file-validation.js";
-
-	function writeTestFile(sourceCode) {
-		fs.writeFileSync(testFile, sourceCode);
-	}
-
-	afterEach(function() {
-		if (fs.existsSync(testFile)) fs.unlinkSync(testFile);
-		assert.ok(!fs.existsSync(testFile), "Could not delete test file: " + testFile);
-	});
-
-	it("should load file from file system (UTF-8 assumed)", function() {
-		writeTestFile("var a = 1");
-		expect(lint.validateFile(testFile)).to.be(false);
-	});
-
-	it("should respect options", function() {
-		writeTestFile("a = 1");
-		expect(lint.validateFile(testFile, { asi: true })).to.be(true);
-	});
-
-	it("should respect globals", function() {
-		writeTestFile("a = 1;");
-		expect(lint.validateFile(testFile, { undef: true }, { a: true })).to.be(true);
-	});
-
-	it("should report filename", function() {
-		inspectConsole(function(output) {
-			writeTestFile("");
-			lint.validateFile(testFile);
-			expect(output).to.eql([testFile + " ok"]);
-		});
-	});
-});
-
 describe("File list validation", function() {
 	var testRoot = testDir + "file-list-validation.js-";
 	var testFiles;

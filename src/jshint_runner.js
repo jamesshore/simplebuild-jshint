@@ -28,7 +28,8 @@ exports.validateFile = function(filename, options, globals) {
 exports.validateFileList = function(fileList, options, globals) {
 	var pass = true;
 	fileList.forEach(function(filename) {
-		pass = exports.validateFile(filename, options, globals) && pass;
+		var sourceCode = fs.readFileSync(filename, "utf8");
+		pass = exports.validateSource(sourceCode, options, globals, filename) && pass;
 	});
 	return pass;
 };
