@@ -7,10 +7,7 @@ var fs = require("fs");
 exports.validateSource = function(sourceCode, options, globals, description) {
 	description = description ? description + " " : "";
 	var pass = jshint(sourceCode, options, globals);
-	if (pass) {
-		console.log(description + "ok");
-	}
-	else {
+	if (!pass) {
 		console.log(description + "failed");
 		jshint.errors.forEach(function(error) {
 			console.log(error.line + ": " + error.evidence.trim());
@@ -28,6 +25,7 @@ exports.validateFile = function(filename, options, globals) {
 exports.validateFileList = function(fileList, options, globals) {
 	var pass = true;
 	fileList.forEach(function(filename) {
+		process.stdout.write(".");
 		var sourceCode = fs.readFileSync(filename, "utf8");
 		pass = exports.validateSource(sourceCode, options, globals, filename) && pass;
 	});

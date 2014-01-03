@@ -110,11 +110,11 @@ describe("File list validation", function() {
 		expect(lint.validateFileList(testFiles)).to.be(false);
 	});
 
-	it.skip("should report one dot per file", function() {
+	it("should report one dot per file", function() {
 		inspectStdout(function(output) {
 			writeTestFiles("var a=1;", "var b=1;", "var c=1;");
 			lint.validateFileList(testFiles);
-			expect(output).to.eql(["..."]);
+			expect(output).to.eql([".", ".", "."]);
 		});
 	});
 
@@ -122,18 +122,26 @@ describe("File list validation", function() {
 		inspectStdout(function(output) {
 			writeTestFiles("YARR=1", "var b=1;", "var c=1;");
 			lint.validateFileList(testFiles);
-			expect(output[0]).to.eql(testFiles[0] + " failed\n");
-			expect(output[3]).to.eql(testFiles[1] + " ok\n");
-			expect(output[4]).to.eql(testFiles[2] + " ok\n");
+			expect(output[0]).to.eql(".");
+			expect(output[1]).to.eql(testFiles[0] + " failed\n");
+			expect(output[4]).to.eql(".");
+			expect(output[5]).to.eql(".");
 		});
 	});
 });
 
 describe("Error reporting", function() {
-	it("should say 'ok' on pass", function() {
+	it("should say nothing on pass", function() {
 		inspectStdout(function(output) {
 			lint.validateSource("");
-			expect(output).to.eql(["ok\n"]);
+			expect(output).to.eql([]);
+		});
+	});
+
+	it("should include optional description", function() {
+		inspectStdout(function(output) {
+			lint.validateSource("foo;", {}, {}, "code B");
+			expect(output[0]).to.eql("code B failed\n");
 		});
 	});
 
@@ -165,17 +173,6 @@ describe("Error reporting", function() {
 		inspectStdout(function(output) {
 			lint.validateSource("   foo()\t \n");
 			expect(output[1]).to.eql("1: foo()\n");
-		});
-	});
-
-	it("should include optional description", function() {
-		inspectStdout(function(output) {
-			lint.validateSource("", {}, {}, "code A");
-			expect(output[0]).to.eql("code A ok\n");
-		});
-		inspectStdout(function(output) {
-			lint.validateSource("foo;", {}, {}, "code B");
-			expect(output[0]).to.eql("code B failed\n");
 		});
 	});
 
