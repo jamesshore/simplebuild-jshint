@@ -4,16 +4,9 @@
 var jshint = require("jshint").JSHINT;
 var fs = require("fs");
 
-exports.validateSource = function(sourceCode, options, globals, description) {
-	description = description ? description + " " : "";
+exports.validateSource = function(sourceCode, options, globals, name) {
 	var pass = jshint(sourceCode, options, globals);
-	if (!pass) {
-		console.log("\n" + description + "failed");
-		jshint.errors.forEach(function(error) {
-			console.log(error.line + ": " + error.evidence.trim());
-			console.log("   " + error.reason);
-		});
-	}
+	if (!pass) reportErrors(name);
 	return pass;
 };
 
@@ -27,3 +20,15 @@ exports.validateFileList = function(fileList, options, globals) {
 	process.stdout.write("\n");
 	return pass;
 };
+
+function reportErrors(name) {
+	// Were you expecting more parameters? Me too. But the errors from the
+	// last run are stored globally on the jshint object. Yeah.
+	name = name ? name + " " : "";
+	console.log("\n" + name + "failed");
+	jshint.errors.forEach(function(error) {
+		console.log(error.line + ": " + error.evidence.trim());
+		console.log("   " + error.reason);
+	});
+}
+
