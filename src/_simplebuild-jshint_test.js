@@ -11,26 +11,41 @@ describe("Simplebuild module", function() {
 		//TODO: factor out and use console inspector?
 		//TODO: simplify testing of success and failure functions
 
-		var succeeded = false;
+		var successCalled;
+		var failureCalled;
 
-		it("takes source code, options, and globals", function() {
-			jshint.checkSource({
-				code: "a = 1;",
-				options: { undef: true },
-				globals: { a: true }
-			}, success, failure);
-
-			expect(succeeded).to.be(true);
-
-			function success() {
-				succeeded = true;
-			}
-
-			function failure() {
-				throw new Error("Failure function called unexpectedly");
-			}
+		beforeEach(function() {
+			successCalled = false;
+			failureCalled = false;
 		});
 
+		it("calls success() callback on success", function() {
+			jshint.checkSource({
+//				code: "var a = 1;"
+			}, success, failure);
+
+			expect(successCalled).to.be(true);
+			expect(failureCalled).to.be(false);
+		});
+
+//		it("takes source code, options, and globals", function() {
+//			jshint.checkSource({
+//				code: "a = 1;",
+//				options: { undef: true },
+//				globals: { a: true }
+//			}, success, failure);
+//
+//			expect(succeeded).to.be(true);
+//
+//		});
+
+		function success() {
+			successCalled = true;
+		}
+
+		function failure() {
+			failureCalled = false;
+		}
 	});
 
 	describe("file validator", function() {
