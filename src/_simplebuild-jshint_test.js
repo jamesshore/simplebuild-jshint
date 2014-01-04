@@ -24,7 +24,6 @@ describe("Simplebuild module", function() {
 			jshint.checkSource({
 //				code: "var a = 1;"
 			}, success, failure);
-			console.log(success, failure);
 			expectSuccess();
 		});
 
