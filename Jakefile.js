@@ -33,7 +33,8 @@ task("test", [], function() {
 
 function testFiles() {
 	var files = new jake.FileList();
-	files.include("src/**/_*_test.js");
+//	files.include("src/**/_*_test.js");
+	files.include("src/_simplebuild-jshint_test.js");
 	return files.toArray();
 }
 
