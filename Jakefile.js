@@ -12,7 +12,7 @@ task("default", ["lint", "test"], function() {
 
 desc("Lint everything");
 task("lint", function() {
-	var passed = lint.validateFileList(lintFiles(), lintOptions(), {});
+	var passed = lint.validateFileList(lintFiles(), lintOptions(), lintGlobals());
 	if (!passed) fail("Lint failed");
 });
 
@@ -55,5 +55,14 @@ function lintOptions() {
 		strict: true,
 		trailing: true,
 		node: true
+	};
+}
+
+function lintGlobals() {
+	return {
+		beforeEach: false,
+		afterEach: false,
+		describe: false,
+		it: false
 	};
 }

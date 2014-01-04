@@ -22,8 +22,7 @@ exports.validateFileList = function(fileList, options, globals) {
 };
 
 function reportErrors(name) {
-	// Were you expecting more parameters? Me too. But the errors from the
-	// last run are stored globally on the jshint object. Yeah.
+	// The errors from the last run are stored globally on the jshint object. Yeah.
 	name = name ? name + " " : "";
 	console.log("\n" + name + "failed");
 	jshint.errors.forEach(function(error) {
