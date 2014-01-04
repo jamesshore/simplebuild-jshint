@@ -19,7 +19,7 @@ task("lint", function() {
 desc("Run tests");
 task("test", [], function() {
 	var mocha = new Mocha({ui: "bdd"});
-	mocha.addFile("src/_jshint_runner_test.js");
+	testFiles().forEach(mocha.addFile.bind(mocha));
 
 	var failures = false;
 	mocha.run()
@@ -31,11 +31,17 @@ task("test", [], function() {
 	});
 }, {async: true});
 
+function testFiles() {
+	var files = new jake.FileList();
+	files.include("src/**/_*_test.js");
+	return files.toArray();
+}
+
 function lintFiles() {
-	var javascriptFiles = new jake.FileList();
-	javascriptFiles.include("*.js");
-	javascriptFiles.include("src/**/*.js");
-	return javascriptFiles.toArray();
+	var files = new jake.FileList();
+	files.include("*.js");
+	files.include("src/**/*.js");
+	return files.toArray();
 }
 
 function lintOptions() {
