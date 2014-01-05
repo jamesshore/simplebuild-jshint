@@ -6,30 +6,15 @@ var assert = require("assert");
 var fs = require("fs");
 
 var lint = require("./jshint_runner.js");
-var stdoutTestTools = require("./__stdout_test_tools.js");
+var stdout = require("./__stdout_test_tools.js");
 var testDir = "temp_files/";
 
 describe("JSHint runner", function() {
 
-
-// console inspection code inspired by http://userinexperience.com/?p=714
-	function inspectStdout(test) {
-		var output = [];
-		var stdout = new stdoutTestTools.TestStdout();
-		stdout.redirect(function(string) {
-			output.push(string);
-		});
-		test(output);
-		stdout.restore();
-	}
-
-	//TODO NEXT: Move inspectStdout into stdout_test_tools
-
-
 	var restoreStdout;
 
 	beforeEach(function() {
-		restoreStdout = stdoutTestTools.ignoreStdout();
+		restoreStdout = stdout.ignore();
 	});
 
 	afterEach(function() {
@@ -98,7 +83,7 @@ describe("JSHint runner", function() {
 		});
 
 		it("should report one dot per file", function() {
-			inspectStdout(function(output) {
+			stdout.inspect(function(output) {
 				writeTestFiles("var a=1;", "var b=1;", "var c=1;");
 				lint.validateFileList(testFiles);
 				expect(output).to.eql([".", ".", ".", "\n"]);
@@ -106,7 +91,7 @@ describe("JSHint runner", function() {
 		});
 
 		it("should validate later files even if early file fails", function() {
-			inspectStdout(function(output) {
+			stdout.inspect(function(output) {
 				writeTestFiles("YARR=1", "var b=1;", "var c=1;");
 				lint.validateFileList(testFiles);
 				expect(output[0]).to.eql(".");
@@ -119,21 +104,21 @@ describe("JSHint runner", function() {
 
 	describe("Error reporting", function() {
 		it("should say nothing on pass", function() {
-			inspectStdout(function(output) {
+			stdout.inspect(function(output) {
 				lint.validateSource("");
 				expect(output).to.eql([]);
 			});
 		});
 
 		it("should include optional description", function() {
-			inspectStdout(function(output) {
+			stdout.inspect(function(output) {
 				lint.validateSource("foo;", {}, {}, "(description)");
 				expect(output[0]).to.eql("\n(description) failed\n");
 			});
 		});
 
 		it("should report errors on failure", function() {
-			inspectStdout(function(output) {
+			stdout.inspect(function(output) {
 				lint.validateSource("foo;");
 				expect(output).to.eql([
 					"\nfailed\n",
@@ -144,7 +129,7 @@ describe("JSHint runner", function() {
 		});
 
 		it("should report all errors", function() {
-			inspectStdout(function(output) {
+			stdout.inspect(function(output) {
 				lint.validateSource("foo;\nbar()");
 				expect(output).to.eql([
 					"\nfailed\n",
@@ -157,7 +142,7 @@ describe("JSHint runner", function() {
 		});
 
 		it("should trim whitespace from source code", function() {
-			inspectStdout(function(output) {
+			stdout.inspect(function(output) {
 				lint.validateSource("   foo()\t \n");
 				expect(output[1]).to.eql("1: foo()\n");
 			});

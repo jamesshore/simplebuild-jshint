@@ -5,14 +5,23 @@ var assert = require("assert");
 
 // This code inspired by http://userinexperience.com/?p=714
 
-exports.overrideStdout = function overrideStdout(newStdout) {
+exports.override = function override(newStdout) {
 	var stdout = new TestStdout();
 	stdout.redirect(newStdout);
 	return stdout.restore.bind(stdout);
 };
 
-exports.ignoreStdout = function ignoreStdout() {
-	return exports.overrideStdout(function() {});
+exports.ignore = function ignore() {
+	return exports.override(function() {});
+};
+
+exports.inspect = function inspect(callback) {
+	var output = [];
+	var restoreStdout = exports.override(function(string) {
+		output.push(string);
+	});
+	callback(output);
+	restoreStdout();
 };
 
 var TestStdout = exports.TestStdout = function TestStdout(newFunction) {
