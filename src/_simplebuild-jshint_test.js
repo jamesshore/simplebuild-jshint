@@ -41,6 +41,23 @@ describe("Simplebuild module", function() {
 			expectFailure(messages.VALIDATION_FAILED);
 		});
 
+		it("passes 'options' option through to JSHint", function() {
+			jshint.checkSource({
+				code: "a = 1;",
+				options: { undef: true },
+			}, success, failure);
+			expectFailure(messages.VALIDATION_FAILED);
+		});
+
+		it("passes 'global' option through to JSHint", function() {
+			jshint.checkSource({
+				code: "a = 1;",
+				options: { undef: true },
+				globals: { a: true }
+			}, success, failure);
+			expectSuccess();
+		});
+
 		it("fails when no code is provided", function() {
 			jshint.checkSource({}, success, failure);
 			expectFailure(messages.NO_CODE_OPTION);
@@ -55,20 +72,6 @@ describe("Simplebuild module", function() {
 			jshint.checkSource(null, success, failure);
 			expectFailure(messages.OPTIONS_MUST_NOT_BE_NULL);
 		});
-
-		//TODO: check that options are an object
-		//TODO: check that source code is a string?
-
-//		it("takes source code, options, and globals", function() {
-//			jshint.checkSource({
-//				code: "a = 1;",
-//				options: { undef: true },
-//				globals: { a: true }
-//			}, success, failure);
-//
-//			expect(succeeded).to.be(true);
-//
-//		});
 	});
 
 	describe("file validator", function() {

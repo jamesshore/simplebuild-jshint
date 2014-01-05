@@ -9,7 +9,7 @@ exports.checkSource = function checkSource(options, success, failure) {
 	if (options === null) return failure(messages.OPTIONS_MUST_NOT_BE_NULL);
 	if (options.code === undefined) return failure(messages.NO_CODE_OPTION);
 
-	var passed = jshint.validateSource(options.code);
+	var passed = jshint.validateSource(options.code, options.options, options.globals);
 	if (passed) success();
 	else failure(messages.VALIDATION_FAILED);
 };
