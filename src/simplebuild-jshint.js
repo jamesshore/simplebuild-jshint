@@ -2,11 +2,12 @@
 "use strict";
 
 var jshint = require("./jshint_runner.js");
+var messages = require("./messages.js");
 
 exports.checkSource = function checkSource(options, success, failure) {
-	if (options.code === undefined) return failure("Need 'code' option containing source code to check.");
+	if (options.code === undefined) return failure(messages.NO_CODE_OPTION);
 
 	var passed = jshint.validateSource(options.code);
 	if (passed) success();
-	else failure("JSHint failed.");
+	else failure(messages.VALIDATION_FAILED);
 };

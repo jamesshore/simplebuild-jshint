@@ -3,6 +3,7 @@
 
 var expect = require("expect.js");
 var jshint = require("./simplebuild-jshint.js");
+var messages = require("./messages.js");
 var stdout = require("./__stdout.js");
 
 describe("Simplebuild module", function() {
@@ -14,11 +15,11 @@ describe("Simplebuild module", function() {
 	beforeEach(function() {
 		successArgs = null;
 		failureArgs = null;
-//		restoreStdout = stdout.ignore();
+		restoreStdout = stdout.ignore();
 	});
 
 	afterEach(function() {
-//		restoreStdout();
+		restoreStdout();
 	});
 
 	describe("source validator", function() {
@@ -37,12 +38,12 @@ describe("Simplebuild module", function() {
 			jshint.checkSource({
 				code: "bargledy-bargle"
 			}, success, failure);
-			expectFailure("JSHint failed.");
+			expectFailure(messages.VALIDATION_FAILED);
 		});
 
 		it("fails when no code is provided", function() {
 			jshint.checkSource({}, success, failure);
-			expectFailure("Need 'code' option containing source code to check.");
+			expectFailure(messages.NO_CODE_OPTION);
 		});
 
 		//TODO: check that options are an object
