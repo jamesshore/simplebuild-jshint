@@ -13,11 +13,9 @@ describe("JSHint runner", function() {
 
 
 // console inspection code inspired by http://userinexperience.com/?p=714
-	var TestStdout = stdoutTestTools.TestStdout;
-
 	function inspectStdout(test) {
 		var output = [];
-		var stdout = new TestStdout();
+		var stdout = new stdoutTestTools.TestStdout();
 		stdout.redirect(function(string) {
 			output.push(string);
 		});
@@ -25,14 +23,17 @@ describe("JSHint runner", function() {
 		stdout.restore();
 	}
 
-	var testStdout = new TestStdout();
+	//TODO NEXT: Move inspectStdout into stdout_test_tools
+
+
+	var restoreStdout;
 
 	beforeEach(function() {
-		testStdout.ignore();
+		restoreStdout = stdoutTestTools.ignoreStdout();
 	});
 
 	afterEach(function() {
-		testStdout.restore();
+		restoreStdout();
 	});
 
 	describe("Source code validation", function() {
