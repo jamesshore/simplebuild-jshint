@@ -14,11 +14,11 @@ describe("Simplebuild module", function() {
 	beforeEach(function() {
 		successArgs = null;
 		failureArgs = null;
-		restoreStdout = stdout.ignore();
+//		restoreStdout = stdout.ignore();
 	});
 
 	afterEach(function() {
-		restoreStdout();
+//		restoreStdout();
 	});
 
 	describe("source validator", function() {
@@ -37,8 +37,16 @@ describe("Simplebuild module", function() {
 			jshint.checkSource({
 				code: "bargledy-bargle"
 			}, success, failure);
-			expectFailure("JSHint failed");
+			expectFailure("JSHint failed.");
 		});
+
+		it("fails when no code is provided", function() {
+			jshint.checkSource({}, success, failure);
+			expectFailure("Need 'code' option containing source code to check.");
+		});
+
+		//TODO: check that options are an object
+		//TODO: check that source code is a string?
 
 //		it("takes source code, options, and globals", function() {
 //			jshint.checkSource({
@@ -55,8 +63,6 @@ describe("Simplebuild module", function() {
 	describe("file validator", function() {
 		//TBD
 	});
-
-
 
 	function success() {
 		successArgs = arguments;

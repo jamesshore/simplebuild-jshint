@@ -4,7 +4,9 @@
 var jshint = require("./jshint_runner.js");
 
 exports.checkSource = function checkSource(options, success, failure) {
+	if (options.code === undefined) return failure("Need 'code' option containing source code to check.");
+
 	var passed = jshint.validateSource(options.code);
 	if (passed) success();
-	else failure("JSHint failed");
+	else failure("JSHint failed.");
 };
