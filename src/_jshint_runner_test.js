@@ -6,28 +6,14 @@ var assert = require("assert");
 var fs = require("fs");
 
 var lint = require("./jshint_runner.js");
+var stdoutTestTools = require("./__stdout_test_tools.js");
 var testDir = "temp_files/";
 
 describe("JSHint runner", function() {
 
 
 // console inspection code inspired by http://userinexperience.com/?p=714
-	function TestStdout(newFunction) {
-		var original;
-		this.redirect = function(newFunction) {
-			assert.ok(!original, "Stdout already redirected");
-			original = process.stdout.write;
-			process.stdout.write = newFunction;
-		};
-		this.ignore = function() {
-			this.redirect(function() {});
-		};
-		this.restore = function() {
-			assert.ok(original, "Stdout not redirected");
-			process.stdout.write = original;
-			original = null;
-		};
-	}
+	var TestStdout = stdoutTestTools.TestStdout;
 
 	function inspectStdout(test) {
 		var output = [];
