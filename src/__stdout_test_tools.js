@@ -4,11 +4,12 @@
 var assert = require("assert");
 
 // This code inspired by http://userinexperience.com/?p=714
-
 exports.override = function override(newStdout) {
-	var stdout = new TestStdout();
-	stdout.redirect(newStdout);
-	return stdout.restore.bind(stdout);
+	var original = process.stdout.write;
+	process.stdout.write = newStdout;
+	return function() {
+		process.stdout.write = original;
+	};
 };
 
 exports.ignore = function ignore() {
@@ -22,21 +23,4 @@ exports.inspect = function inspect(callback) {
 	});
 	callback(output);
 	restoreStdout();
-};
-
-var TestStdout = exports.TestStdout = function TestStdout(newFunction) {
-	var original;
-	this.redirect = function(newFunction) {
-		assert.ok(!original, "Stdout already redirected");
-		original = process.stdout.write;
-		process.stdout.write = newFunction;
-	};
-	this.ignore = function() {
-		this.redirect(function() {});
-	};
-	this.restore = function() {
-		assert.ok(original, "Stdout not redirected");
-		process.stdout.write = original;
-		original = null;
-	};
 };
