@@ -3,22 +3,27 @@
 
 var expect = require("expect.js");
 var jshint = require("./simplebuild-jshint.js");
+var stdout = require("./__stdout.js");
 
 describe("Simplebuild module", function() {
 
+	var restoreStdout;
 	var successCalled;
 	var failureCalled;
 
 	beforeEach(function() {
 		successCalled = false;
 		failureCalled = false;
+		restoreStdout = stdout.ignore();
+	});
+
+	afterEach(function() {
+		restoreStdout();
 	});
 
 	describe("source validator", function() {
 
-		//TODO: factor out and use console inspector?
 		//TODO: simplify testing of success and failure functions
-		//TODO: fix console inspector; it's squashing output permanently
 		//TODO: validate options
 
 		it("calls success() callback on success", function() {
