@@ -46,6 +46,11 @@ describe("Simplebuild module", function() {
 			expectFailure(messages.NO_CODE_OPTION);
 		});
 
+		it("fails when option variable isn't an object", function() {
+			jshint.checkSource("foo", success, failure);
+			expectFailure(messages.OPTIONS_MUST_BE_OBJECT);
+		});
+
 		//TODO: check that options are an object
 		//TODO: check that source code is a string?
 

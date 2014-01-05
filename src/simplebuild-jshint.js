@@ -5,6 +5,7 @@ var jshint = require("./jshint_runner.js");
 var messages = require("./messages.js");
 
 exports.checkSource = function checkSource(options, success, failure) {
+	if (typeof options !== "object") return failure(messages.OPTIONS_MUST_BE_OBJECT);
 	if (options.code === undefined) return failure(messages.NO_CODE_OPTION);
 
 	var passed = jshint.validateSource(options.code);
