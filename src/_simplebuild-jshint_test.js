@@ -8,12 +8,12 @@ var stdout = require("./__stdout.js");
 describe("Simplebuild module", function() {
 
 	var restoreStdout;
-	var successCalled;
-	var failureCalled;
+	var successArgs;
+	var failureArgs;
 
 	beforeEach(function() {
-		successCalled = false;
-		failureCalled = false;
+		successArgs = null;
+		failureArgs = null;
 		restoreStdout = stdout.ignore();
 	});
 
@@ -37,7 +37,7 @@ describe("Simplebuild module", function() {
 			jshint.checkSource({
 				code: "bargledy-bargle"
 			}, success, failure);
-			expectFailure();
+			expectFailure("JSHint failed");
 		});
 
 //		it("takes source code, options, and globals", function() {
@@ -59,21 +59,23 @@ describe("Simplebuild module", function() {
 
 
 	function success() {
-		successCalled = true;
+		successArgs = arguments;
 	}
 
 	function failure() {
-		failureCalled = true;
+		failureArgs = arguments;
 	}
 
 	function expectSuccess() {
-		if (!successCalled) throw new Error("Expected success callback to be called");
-		if (failureCalled) throw new Error("Did not expect failure callback to be called");
+		if (successArgs === null) throw new Error("Expected success callback to be called");
+		if (failureArgs !== null) throw new Error("Did not expect failure callback to be called");
+		expect(successArgs).to.eql([]);
 	}
 
-	function expectFailure() {
-		if (!failureCalled) throw new Error("Expected failure callback to be called");
-		if (successCalled) throw new Error("Did not expect success callback to be called");
+	function expectFailure(failureMessage) {
+		if (failureArgs === null) throw new Error("Expected failure callback to be called");
+		if (successArgs !== null) throw new Error("Did not expect success callback to be called");
+		expect(failureArgs).to.eql([ failureMessage ]);
 	}
 
 });
