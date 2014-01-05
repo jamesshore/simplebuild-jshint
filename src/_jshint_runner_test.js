@@ -6,7 +6,7 @@ var assert = require("assert");
 var fs = require("fs");
 
 var lint = require("./jshint_runner.js");
-var stdout = require("./__stdout_test_tools.js");
+var stdout = require("./__stdout.js");
 var testDir = "temp_files/";
 
 describe("JSHint runner", function() {
