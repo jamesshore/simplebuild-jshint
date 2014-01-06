@@ -19,7 +19,7 @@ exports.checkCode.description = messages.SOURCE_VALIDATOR_DESCRIPTION;
 
 
 exports.checkFiles = function checkFiles(options, success, failure) {
-	var passed = jshint.validateFileList(options.files);
+	var passed = jshint.validateFileList(options.files, options.options, options.globals);
 	if (passed) success();
 	else failure(messages.VALIDATION_FAILED);
 };

@@ -106,27 +106,31 @@ describe("Simplebuild module", function() {
 				jshint.checkFiles({
 					files: [ filenames[0] + "*" ]
 				});
-				expectFailure();
+				expectFailure(messages.VALIDATION_FAILED);
 			});
 		});
 
-//		it("passes 'options' option through to JSHint", function() {
-//			jshint.checkSource({
-//				code: "a = 1;",
-//				options: { undef: true },
-//			}, success, failure);
-//			expectFailure(messages.VALIDATION_FAILED);
-//		});
-//
-//		it("passes 'global' option through to JSHint", function() {
-//			jshint.checkSource({
-//				code: "a = 1;",
-//				options: { undef: true },
-//				globals: { a: true }
-//			}, success, failure);
-//			expectSuccess();
-//		});
-//
+		it("passes 'options' option through to JSHint", function() {
+			testFiles.write("a = 1;", function(filenames) {
+				jshint.checkFiles({
+					files: filenames,
+					options: { undef: true },
+				}, success, failure);
+				expectFailure(messages.VALIDATION_FAILED);
+			});
+		});
+
+		it("passes 'global' option through to JSHint", function() {
+			testFiles.write("a = 1;", function(filenames) {
+				jshint.checkFiles({
+					files: filenames,
+					options: { undef: true },
+					globals: { a: true }
+				}, success, failure);
+				expectSuccess();
+			});
+		});
+
 //		it("fails when no code is provided", function() {
 //			jshint.checkSource({}, success, failure);
 //			expectFailure(messages.NO_CODE_OPTION);
