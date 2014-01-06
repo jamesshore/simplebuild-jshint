@@ -101,10 +101,10 @@ describe("Simplebuild module", function() {
 			expectFailure(messages.VALIDATION_FAILED);
 		});
 
-		it.skip("supports globs", function() {
+		it("supports globs", function() {
 			testFiles.write("var a = 1;", "bargledy-bargle", function(filenames) {
 				jshint.checkFiles({
-					files: [ filenames[0] + "*" ]
+					files: [ "temp_files/*.js" ]
 				});
 				expectFailure(messages.VALIDATION_FAILED);
 			});
