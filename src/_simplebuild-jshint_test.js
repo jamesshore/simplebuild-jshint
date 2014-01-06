@@ -101,6 +101,15 @@ describe("Simplebuild module", function() {
 			expectFailure(messages.VALIDATION_FAILED);
 		});
 
+		it.skip("supports globs", function() {
+			testFiles.write("var a = 1;", "bargledy-bargle", function(filenames) {
+				jshint.checkFiles({
+					files: [ filenames[0] + "*" ]
+				});
+				expectFailure();
+			});
+		});
+
 //		it("passes 'options' option through to JSHint", function() {
 //			jshint.checkSource({
 //				code: "a = 1;",
