@@ -11,8 +11,12 @@ exports.write = function write() {
 	var callback = lastArgument(arguments);
 
 	var testFiles = fileContents.map(createFile);
-	callback(testFiles);
-	testFiles.forEach(deleteFile);
+	try {
+		callback(testFiles);
+	}
+	finally {
+		testFiles.forEach(deleteFile);
+	}
 };
 
 function createFile(fileBody, index) {
