@@ -8,5 +8,9 @@ exports.OPTIONS_MUST_NOT_BE_NULL = "Options parameter must not be null.";
 
 // Source validator
 exports.SOURCE_VALIDATOR_TITLE = "JSHint";
-exports.SOURCE_VALIDATOR_DESCRIPTION = "Check source code for common errors.";
+exports.SOURCE_VALIDATOR_DESCRIPTION = "Check JavaScript source code for common errors.";
 exports.NO_CODE_OPTION = "Need 'code' option containing source code to check.";
+
+// File validator
+exports.FILE_VALIDATOR_TITLE = "JSHint";
+exports.FILE_VALIDATOR_DESCRIPTION = "Check JavaScript files for common errors.";
