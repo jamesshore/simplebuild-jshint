@@ -13,11 +13,16 @@ exports.checkCode = function checkCode(options, success, failure) {
 	if (passed) success();
 	else failure(messages.VALIDATION_FAILED);
 };
+
 exports.checkCode.title = messages.SOURCE_VALIDATOR_TITLE;
 exports.checkCode.description = messages.SOURCE_VALIDATOR_DESCRIPTION;
 
+
 exports.checkFiles = function checkFiles(options, success, failure) {
-	success();
+	var passed = jshint.validateFileList(options.files);
+	if (passed) success();
+	else failure(messages.VALIDATION_FAILED);
 };
+
 exports.checkFiles.title = messages.FILE_VALIDATOR_TITLE;
 exports.checkFiles.description = messages.FILE_VALIDATOR_DESCRIPTION;

@@ -92,13 +92,15 @@ describe("Simplebuild module", function() {
 			});
 		});
 
-//		it("calls failure() callback on failure", function() {
-//			jshint.checkSource({
-//				code: "bargledy-bargle"
-//			}, success, failure);
-//			expectFailure(messages.VALIDATION_FAILED);
-//		});
-//
+		it("calls failure() callback on failure", function() {
+			testFiles.write("bargledy-bargle", function(filenames) {
+				jshint.checkFiles({
+					files: filenames
+				}, success, failure);
+			});
+			expectFailure(messages.VALIDATION_FAILED);
+		});
+
 //		it("passes 'options' option through to JSHint", function() {
 //			jshint.checkSource({
 //				code: "a = 1;",
