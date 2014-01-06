@@ -7,19 +7,29 @@ var assert = require("assert");
 var testRoot = "temp_files/file-list-validation.js-";
 
 exports.write = function write() {
-	var testFiles = [];
+	var fileContents = allButLastArgument(arguments);
+	var callback = lastArgument(arguments);
 
-	for (var i = 0; i < arguments.length - 1; i++) {
-		var testFile = testRoot + i;
-		fs.writeFileSync(testFile, arguments[i]);
-		testFiles.push(testFile);
-	}
-	var callback = arguments[arguments.length - 1];
-
+	var testFiles = fileContents.map(createFile);
 	callback(testFiles);
-
-	testFiles.forEach(function(testFile) {
-		fs.unlinkSync(testFile);
-		assert.ok(!fs.existsSync(testFile), "Could not delete test file: " + testFile);
-	});
+	testFiles.forEach(deleteFile);
 };
+
+function createFile(fileBody, index) {
+	var testFile = testRoot + index;
+	fs.writeFileSync(testFile, fileBody);
+	return testFile;
+}
+
+function deleteFile(testFile) {
+	fs.unlinkSync(testFile);
+	assert.ok(!fs.existsSync(testFile), "Could not delete test file: " + testFile);
+}
+
+function allButLastArgument(args) {
+	return Array.prototype.slice.call(args, 0, -1);
+}
+
+function lastArgument(args) {
+	return args[args.length - 1];
+}
