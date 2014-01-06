@@ -7,15 +7,15 @@ var assert = require("assert");
 var testRoot = "temp_files/file-list-validation.js-";
 
 exports.write = function write() {
-	var fileContents = allButLastArgument(arguments);
+	var fileBodies = allButLastArgument(arguments);
 	var callback = lastArgument(arguments);
 
-	var testFiles = fileContents.map(createFile);
+	var filenames = fileBodies.map(createFile);
 	try {
-		callback(testFiles);
+		callback(filenames);
 	}
 	finally {
-		testFiles.forEach(deleteFile);
+		filenames.forEach(deleteFile);
 	}
 };
 
