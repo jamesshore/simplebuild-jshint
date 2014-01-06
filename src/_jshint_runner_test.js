@@ -7,7 +7,6 @@ var fs = require("fs");
 
 var lint = require("./jshint_runner.js");
 var stdout = require("./__stdout.js");
-var testDir = "temp_files/";
 
 describe("JSHint runner", function() {
 
@@ -39,65 +38,70 @@ describe("JSHint runner", function() {
 		});
 	});
 
+	var testDir = "temp_files/";
+	var testRoot = testDir + "file-list-validation.js-";
+
 	describe("File list validation", function() {
-		var testRoot = testDir + "file-list-validation.js-";
-		var testFiles;
-
-		beforeEach(function() {
-			testFiles = [];
-		});
-
 		function writeTestFiles() {
-			for (var i = 0; i < arguments.length; i++) {
+			var testFiles = [];
+
+			for (var i = 0; i < arguments.length - 1; i++) {
 				var testFile = testRoot + i;
 				fs.writeFileSync(testFile, arguments[i]);
 				testFiles.push(testFile);
 			}
-		}
+			var callback = arguments[arguments.length - 1];
 
-		afterEach(function() {
+			callback(testFiles);
+
 			testFiles.forEach(function(testFile) {
 				fs.unlinkSync(testFile);
 				assert.ok(!fs.existsSync(testFile), "Could not delete test file: " + testFile);
 			});
-		});
+		}
 
 		it("should respect options", function() {
-			writeTestFiles("var a=1");
-			expect(lint.validateFileList(testFiles, { asi: true })).to.be(true);
+			writeTestFiles("var a=1", function(testFiles) {
+				expect(lint.validateFileList(testFiles, { asi: true })).to.be(true);
+			});
 		});
 
 		it("should respect globals", function() {
-			writeTestFiles("a = 1;");
-			expect(lint.validateFileList(testFiles, { undef: true }, { a: true })).to.be(true);
+			writeTestFiles("a = 1;", function(testFiles) {
+				expect(lint.validateFileList(testFiles, { undef: true }, { a: true })).to.be(true);
+			});
 		});
 
 		it("should pass when all files valid", function() {
-			writeTestFiles("var a=1;", "var b=1;", "var c=1;");
-			expect(lint.validateFileList(testFiles)).to.be(true);
+			writeTestFiles("var a=1;", "var b=1;", "var c=1;", function(testFiles) {
+				expect(lint.validateFileList(testFiles)).to.be(true);
+			});
 		});
 
 		it("should fail when any file invalid", function() {
-			writeTestFiles("var a=1;", "var b=1;", "YARR", "var d=1;");
-			expect(lint.validateFileList(testFiles)).to.be(false);
+			writeTestFiles("var a=1;", "var b=1;", "YARR", "var d=1;", function(testFiles) {
+				expect(lint.validateFileList(testFiles)).to.be(false);
+			});
 		});
 
 		it("should report one dot per file", function() {
 			stdout.inspect(function(output) {
-				writeTestFiles("var a=1;", "var b=1;", "var c=1;");
-				lint.validateFileList(testFiles);
-				expect(output).to.eql([".", ".", ".", "\n"]);
+				writeTestFiles("var a=1;", "var b=1;", "var c=1;", function(testFiles) {
+					lint.validateFileList(testFiles);
+					expect(output).to.eql([".", ".", ".", "\n"]);
+				});
 			});
 		});
 
 		it("should validate later files even if early file fails", function() {
 			stdout.inspect(function(output) {
-				writeTestFiles("YARR=1", "var b=1;", "var c=1;");
-				lint.validateFileList(testFiles);
-				expect(output[0]).to.eql(".");
-				expect(output[1]).to.eql("\n" + testFiles[0] + " failed\n");
-				expect(output[4]).to.eql(".");
-				expect(output[5]).to.eql(".");
+				writeTestFiles("YARR=1", "var b=1;", "var c=1;", function(testFiles) {
+					lint.validateFileList(testFiles);
+					expect(output[0]).to.eql(".");
+					expect(output[1]).to.eql("\n" + testFiles[0] + " failed\n");
+					expect(output[4]).to.eql(".");
+					expect(output[5]).to.eql(".");
+				});
 			});
 		});
 	});
