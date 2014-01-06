@@ -5,6 +5,7 @@ var expect = require("expect.js");
 var jshint = require("./simplebuild-jshint.js");
 var messages = require("./messages.js");
 var stdout = require("./__stdout.js");
+var testFiles = require("./__test_files.js");
 
 describe("Simplebuild module", function() {
 
@@ -82,13 +83,15 @@ describe("Simplebuild module", function() {
 			expect(jshint.checkFiles.description).to.equal(messages.FILE_VALIDATOR_DESCRIPTION);
 		});
 
-//		it("calls success() callback on success", function() {
-//			jshint.checkSource({
-//				code: "var a = 1;"
-//			}, success, failure);
-//			expectSuccess();
-//		});
-//
+		it("calls success() callback on success", function() {
+			testFiles.write("var a = 1;", function(filenames) {
+				jshint.checkFiles({
+					files: filenames
+				}, success, failure);
+				expectSuccess();
+			});
+		});
+
 //		it("calls failure() callback on failure", function() {
 //			jshint.checkSource({
 //				code: "bargledy-bargle"

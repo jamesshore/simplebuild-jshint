@@ -16,6 +16,8 @@ exports.checkCode = function checkCode(options, success, failure) {
 exports.checkCode.title = messages.SOURCE_VALIDATOR_TITLE;
 exports.checkCode.description = messages.SOURCE_VALIDATOR_DESCRIPTION;
 
-exports.checkFiles = {};
+exports.checkFiles = function checkFiles(options, success, failure) {
+	success();
+};
 exports.checkFiles.title = messages.FILE_VALIDATOR_TITLE;
 exports.checkFiles.description = messages.FILE_VALIDATOR_DESCRIPTION;

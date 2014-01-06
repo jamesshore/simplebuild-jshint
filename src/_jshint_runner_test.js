@@ -41,33 +41,33 @@ describe("JSHint runner", function() {
 
 	describe("File list validation", function() {
 		it("should respect options", function() {
-			testFiles.write("var a=1", function(testFiles) {
-				expect(lint.validateFileList(testFiles, { asi: true })).to.be(true);
+			testFiles.write("var a=1", function(filenames) {
+				expect(lint.validateFileList(filenames, { asi: true })).to.be(true);
 			});
 		});
 
 		it("should respect globals", function() {
-			testFiles.write("a = 1;", function(testFiles) {
-				expect(lint.validateFileList(testFiles, { undef: true }, { a: true })).to.be(true);
+			testFiles.write("a = 1;", function(filenames) {
+				expect(lint.validateFileList(filenames, { undef: true }, { a: true })).to.be(true);
 			});
 		});
 
 		it("should pass when all files valid", function() {
-			testFiles.write("var a=1;", "var b=1;", "var c=1;", function(testFiles) {
-				expect(lint.validateFileList(testFiles)).to.be(true);
+			testFiles.write("var a=1;", "var b=1;", "var c=1;", function(filenames) {
+				expect(lint.validateFileList(filenames)).to.be(true);
 			});
 		});
 
 		it("should fail when any file invalid", function() {
-			testFiles.write("var a=1;", "var b=1;", "YARR", "var d=1;", function(testFiles) {
-				expect(lint.validateFileList(testFiles)).to.be(false);
+			testFiles.write("var a=1;", "var b=1;", "YARR", "var d=1;", function(filenames) {
+				expect(lint.validateFileList(filenames)).to.be(false);
 			});
 		});
 
 		it("should report one dot per file", function() {
 			stdout.inspect(function(output) {
-				testFiles.write("var a=1;", "var b=1;", "var c=1;", function(testFiles) {
-					lint.validateFileList(testFiles);
+				testFiles.write("var a=1;", "var b=1;", "var c=1;", function(filenames) {
+					lint.validateFileList(filenames);
 					expect(output).to.eql([".", ".", ".", "\n"]);
 				});
 			});
@@ -75,10 +75,10 @@ describe("JSHint runner", function() {
 
 		it("should validate later files even if early file fails", function() {
 			stdout.inspect(function(output) {
-				testFiles.write("YARR=1", "var b=1;", "var c=1;", function(testFiles) {
-					lint.validateFileList(testFiles);
+				testFiles.write("YARR=1", "var b=1;", "var c=1;", function(filenames) {
+					lint.validateFileList(filenames);
 					expect(output[0]).to.eql(".");
-					expect(output[1]).to.eql("\n" + testFiles[0] + " failed\n");
+					expect(output[1]).to.eql("\n" + filenames[0] + " failed\n");
 					expect(output[4]).to.eql(".");
 					expect(output[5]).to.eql(".");
 				});
