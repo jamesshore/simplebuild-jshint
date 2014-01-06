@@ -13,3 +13,5 @@ exports.checkSource = function checkSource(options, success, failure) {
 	if (passed) success();
 	else failure(messages.VALIDATION_FAILED);
 };
+exports.checkSource.title = messages.SOURCE_VALIDATOR_TITLE;
+exports.checkSource.description = messages.SOURCE_VALIDATOR_DESCRIPTION;

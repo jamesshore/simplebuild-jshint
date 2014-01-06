@@ -24,8 +24,10 @@ describe("Simplebuild module", function() {
 
 	describe("source validator", function() {
 
-		//TODO: simplify testing of success and failure functions
-		//TODO: validate options
+		it("has descriptors", function() {
+			expect(jshint.checkSource.title).to.equal(messages.SOURCE_VALIDATOR_TITLE);
+			expect(jshint.checkSource.description).to.equal(messages.SOURCE_VALIDATOR_DESCRIPTION);
+		});
 
 		it("calls success() callback on success", function() {
 			jshint.checkSource({
