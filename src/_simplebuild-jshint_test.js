@@ -131,20 +131,20 @@ describe("Simplebuild module", function() {
 			});
 		});
 
-//		it("fails when no code is provided", function() {
-//			jshint.checkSource({}, success, failure);
-//			expectFailure(messages.NO_CODE_OPTION);
-//		});
-//
-//		it("fails when option variable isn't an object", function() {
-//			jshint.checkSource("foo", success, failure);
-//			expectFailure(messages.OPTIONS_MUST_BE_OBJECT);
-//		});
-//
-//		it("fails when option variable is null", function() {
-//			jshint.checkSource(null, success, failure);
-//			expectFailure(messages.OPTIONS_MUST_NOT_BE_NULL);
-//		});
+		it("fails when no code is provided", function() {
+			jshint.checkFiles({}, success, failure);
+			expectFailure(messages.NO_FILES_OPTION);
+		});
+
+		it("fails when option variable isn't an object", function() {
+			jshint.checkFiles("foo", success, failure);
+			expectFailure(messages.OPTIONS_MUST_BE_OBJECT);
+		});
+
+		it("fails when option variable is null", function() {
+			jshint.checkFiles(null, success, failure);
+			expectFailure(messages.OPTIONS_MUST_NOT_BE_NULL);
+		});
 	});
 
 	function success() {
