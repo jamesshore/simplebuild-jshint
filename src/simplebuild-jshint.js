@@ -1,6 +1,7 @@
 // Copyright (c) 2014 Titanium I.T. LLC. All rights reserved. For license, see "README" or "LICENSE" file.
 "use strict";
 
+var simplebuild = require("simplebuild");
 var jshint = require("./jshint_runner.js");
 var messages = require("./messages.js");
 
@@ -23,7 +24,9 @@ exports.checkFiles = function checkFiles(options, success, failure) {
 	if (options === null) return failure(messages.OPTIONS_MUST_NOT_BE_NULL);
 	if (options.files === undefined) return failure(messages.NO_FILES_OPTION);
 
-	var passed = jshint.validateFileList(options.files, options.options, options.globals);
+	var files = simplebuild.deglobSync(options.files);
+
+	var passed = jshint.validateFileList(files, options.options, options.globals);
 	if (passed) success();
 	else failure(messages.VALIDATION_FAILED);
 };

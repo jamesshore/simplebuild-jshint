@@ -104,8 +104,8 @@ describe("Simplebuild module", function() {
 		it("supports globs", function() {
 			testFiles.write("var a = 1;", "bargledy-bargle", function(filenames) {
 				jshint.checkFiles({
-					files: [ "temp_files/*.js" ]
-				});
+					files: [ "temp_files/*" ]
+				}, success, failure);
 				expectFailure(messages.VALIDATION_FAILED);
 			});
 		});
