@@ -2,7 +2,7 @@
 
 A simple library for automating JSHint.
 
-[JSHint](http://www.jshint.com/) is a lint tool for JavaScript: it analyzes JavaScript source code for common mistakes. This library provides a simple interface to JSHint that's convenient to use with task automation tools such as [Grunt](http://gruntjs.com/) or [Jake](https://github.com/mde/jake).
+[JSHint](http://www.jshint.com/) is a static analysis ("lint") tool for JavaScript. It analyzes JavaScript source code for common mistakes. This library provides a simple interface to JSHint that's convenient to use with task automation tools such as [Grunt](http://gruntjs.com/) or [Jake](https://github.com/mde/jake).
 
 
 ## Installation
