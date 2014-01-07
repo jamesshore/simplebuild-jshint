@@ -28,5 +28,8 @@
     "jake": "~0.7.6",
     "mocha": "~1.16.2",
     "expect.js": "~0.2.0"
+  },
+  "dependencies": {
+    "simplebuild": "~0.2.0"
   }
 }
