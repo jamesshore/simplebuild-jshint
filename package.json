@@ -1,36 +1,36 @@
 {
-	"name": "simplebuild-jshint",
-	"version": "0.0.0",
-	"engines": {
-		"node": ">=0.10"
-	},
-	"description": "A Simplebuild module for JSHint",
-	"main": "src/index.js",
-	"scripts": {
-		"test": "jake"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/jamesshore/simplebuild-jshint"
-	},
-	"keywords": [
-		"simplebuild",
-		"jshint",
-		"lint"
-	],
-	"author": "James Shore",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/jamesshore/simplebuild-jshint/issues"
-	},
-	"homepage": "https://github.com/jamesshore/simplebuild-jshint",
-	"devDependencies": {
-		"jshint": "~2.4.0",
-		"jake": "~0.7.6",
-		"mocha": "~1.16.2",
-		"expect.js": "~0.2.0"
-	},
-	"dependencies": {
-		"simplebuild": "~0.2.0"
-	}
+  "name": "simplebuild-jshint",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "description": "A simple library for automating JSHint",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jake"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamesshore/simplebuild-jshint"
+  },
+  "keywords": [
+    "simplebuild",
+    "jshint",
+    "lint"
+  ],
+  "author": "James Shore",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamesshore/simplebuild-jshint/issues"
+  },
+  "homepage": "https://github.com/jamesshore/simplebuild-jshint",
+  "devDependencies": {
+    "jshint": "~2.4.0",
+    "jake": "~0.7.6",
+    "mocha": "~1.16.2",
+    "expect.js": "~0.2.0"
+  },
+  "dependencies": {
+    "simplebuild": "~0.2.0"
+  }
 }
