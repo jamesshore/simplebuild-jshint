@@ -43,7 +43,7 @@ Run JSHint against a list of files. A `.` will be written to stdout for each fil
 
 * `success()`: a function to call if the code validates successfully.
 
-* `failure(message)`: a function to call if the code does not validate successfully. In this case, a simple error message is provided in the `message` parameter and detailed error messages are output to stdout.
+* `failure(message)`: a function to call if the code does not validate successfully. In this case, a simple error message is provided in the `message` parameter and detailed error messages are written to stdout.
 
 
 ## Examples
@@ -101,9 +101,29 @@ task("lint", function() {
 }, { async: true });
 ```
 
+### Plain JavaScript
+
+```javascript
+var jshint = require("simplebuild-jshint");
+
+jshint.checkFiles({
+    files: [ "*.js", "src/**/*.js", "test/**/*.js" ],
+    options: {
+        bitwise: true,
+        curly: false,
+        eqeqeq: true
+        // etc
+    }
+}, function() {
+    console.log("OK")
+}, function(message) {
+    console.log(message);
+});
+```
+
 ## About Simplebuild
 
-This library is a simplebuild module. In addition to being used as a standalone module (as described above), it can also be used with simplebuild extensions and mappers. For more information about simplebuild, see [the Simplebuild GitHub page](https://github.com/jamesshore/simplebuild).
+This library is a simplebuild module. In addition to being used as a standalone library (as described above), it can also be used with simplebuild extensions and mappers. For more information about simplebuild, see [the Simplebuild GitHub page](https://github.com/jamesshore/simplebuild).
 
 
 ## License
