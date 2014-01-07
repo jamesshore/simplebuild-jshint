@@ -56,7 +56,6 @@ This library is designed to be easy to integrate with any task automation tool:
 var jshint = require("simplebuild-jshint");
 
 module.exports = function(grunt) {
-
     grunt.initConfig({
         jshint: {
             files: [ "*.js", "src/**/*.js", "test/**/*.js" ],
@@ -74,10 +73,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask("default", [ "lint" ]);
-
-    function lintOptions() {
-        return ;
-    }
 };
 ```
 
