@@ -2,7 +2,7 @@
 /*global desc, task, jake, fail, complete, directory*/
 "use strict";
 
-var jshint = require("./src/simplebuild-jshint.js");
+var jshint = require("./src/index.js");
 var Mocha = require("mocha");
 
 desc("Validate code (lint and test)");

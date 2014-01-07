@@ -2,7 +2,7 @@
 "use strict";
 
 var expect = require("expect.js");
-var jshint = require("./simplebuild-jshint.js");
+var jshint = require("./index.js");
 var messages = require("./messages.js");
 var stdout = require("./__stdout.js");
 var testFiles = require("./__test_files.js");
