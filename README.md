@@ -30,11 +30,11 @@ Run JSHint against raw source code. Any errors will be written to stdout.
 
 * `success()` a function to call if the code validates successfully.
 
-* `failure(message)` a function to call if the code does not validate successfully. In this case, a simple error message is provided in the `message` parameter, but detailed error messages are output to stdout.
+* `failure(message)` a function to call if the code does not validate successfully. A simple error message is provided in the `message` parameter, but detailed error messages are output to stdout.
 
 ### `checkFiles(options, success, failure)`
 
-Run JSHint against a list of files. A `.` will be written to stdout for each file processed. Any errors will be written to stdout.
+Run JSHint against a list of files. A dot will be written to stdout for each file processed. Any errors will be written to stdout.
 
 * `options`: an object containing the following properties:
     * `files`: a string or array containing the files to check. Globs (`*`) and globstars (`**`) will be expanded to match files and directory trees respectively. Prepend `!` to exclude files.
@@ -43,7 +43,7 @@ Run JSHint against a list of files. A `.` will be written to stdout for each fil
 
 * `success()`: a function to call if the code validates successfully.
 
-* `failure(message)`: a function to call if the code does not validate successfully. In this case, a simple error message is provided in the `message` parameter and detailed error messages are written to stdout.
+* `failure(message)`: a function to call if the code does not validate successfully. A simple error message is provided in the `message` parameter, but detailed error messages are written to stdout.
 
 
 ## Examples
