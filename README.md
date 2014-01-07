@@ -1,6 +1,6 @@
 # Simplebuild-JSHint
 
-A simple library for automating JSHint tasks.
+A simple library for automating JSHint.
 
 [JSHint](http://www.jshint.com/) is a lint tool for JavaScript: it analyzes JavaScript source code for common mistakes. This library provides a simple interface to JSHint that's convenient to use with task automation tools such as [Grunt](http://gruntjs.com/) or [Jake](https://github.com/mde/jake).
 
@@ -115,7 +115,7 @@ jshint.checkFiles({
         // etc
     }
 }, function() {
-    console.log("OK")
+    console.log("OK");
 }, function(message) {
     console.log(message);
 });
