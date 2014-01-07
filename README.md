@@ -24,9 +24,9 @@ This library provides two functions for running JSHint. The first takes raw sour
 Run JSHint against raw source code. Any errors will be written to stdout.
 
 * `options`: an object containing the following properties:
-	* `code`: a string containing the source code to check.
-	* `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
-	* `globals` (optional): Global variables (equivalent to `options.globals`).
+    * `code`: a string containing the source code to check.
+    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
+    * `globals` (optional): Global variables (equivalent to `options.globals`).
 
 * `success()` a function to call if the code validates successfully.
 
@@ -37,14 +37,47 @@ Run JSHint against raw source code. Any errors will be written to stdout.
 Run JSHint against a list of files. A `.` will be written to stdout for each file processed. Any errors will be written to stdout.
 
 * `options`: an object containing the following properties:
-	* `files`: a string or array containing the files to check. Globs (`*`) and globstars (`**`) will be expanded to match files and directory trees respectively. Prepend `!` to exclude files.
-	* `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
-	* `globals` (optional): Global variables (equivalent to `options.globals`).
+    * `files`: a string or array containing the files to check. Globs (`*`) and globstars (`**`) will be expanded to match files and directory trees respectively. Prepend `!` to exclude files.
+    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
+    * `globals` (optional): Global variables (equivalent to `options.globals`).
 
 * `success()`: a function to call if the code validates successfully.
 
 * `failure(message)`: a function to call if the code does not validate successfully. In this case, a simple error message is provided in the `message` parameter and detailed error messages are output to stdout.
 
+
+## Examples
+
+This library is designed to easily integrate with any task runner:
+
+### Grunt
+
+```javascript
+var jshint = require("simplebuild-jshint");
+
+module.exports = function(grunt) {
+
+    grunt.initConfig({
+        jshint: {
+            files: [ "*.js", "src/**/*.js", "test/**/*.js" ],
+            options: lintOptions(),
+        }
+    });
+
+    grunt.registerTask("lint", "Lint everything", function() {
+        jshint.checkFiles(grunt.config("jshint"), this.async(), grunt.warn);
+    });
+
+    function lintOptions() {
+        return {
+            bitwise: true,
+            curly: false,
+            eqeqeq: true
+            // etc
+        };
+    }
+};
+```
 
 ## About Simplebuild
 
