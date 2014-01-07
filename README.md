@@ -48,7 +48,7 @@ Run JSHint against a list of files. A `.` will be written to stdout for each fil
 
 ## Examples
 
-This library is designed to easily integrate with any task runner:
+This library is designed to be easy to integrate with any task automation tool:
 
 ### Grunt
 
@@ -60,7 +60,12 @@ module.exports = function(grunt) {
     grunt.initConfig({
         jshint: {
             files: [ "*.js", "src/**/*.js", "test/**/*.js" ],
-            options: lintOptions(),
+            options: {
+                bitwise: true,
+                curly: false,
+                eqeqeq: true
+                // etc
+            }
         }
     });
 
@@ -68,15 +73,32 @@ module.exports = function(grunt) {
         jshint.checkFiles(grunt.config("jshint"), this.async(), grunt.warn);
     });
 
+    grunt.registerTask("default", [ "lint" ]);
+
     function lintOptions() {
-        return {
+        return ;
+    }
+};
+```
+
+### Jake
+
+```javascript
+var jshint = require("simplebuild-jshint");
+
+task("default", [ "lint" ]);
+
+task("lint", function() {
+    jshint.checkFiles({
+        files: [ "*.js", "src/**/*.js", "test/**/*.js" ],
+        options: {
             bitwise: true,
             curly: false,
             eqeqeq: true
             // etc
-        };
-    }
-};
+        }
+    }, complete, fail);
+}, { async: true });
 ```
 
 ## About Simplebuild
