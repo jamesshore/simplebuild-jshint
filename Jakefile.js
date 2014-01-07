@@ -2,7 +2,7 @@
 /*global desc, task, jake, fail, complete, directory*/
 "use strict";
 
-var lint = require("./src/jshint_runner.js");
+var jshint = require("./src/simplebuild-jshint.js");
 var Mocha = require("mocha");
 
 desc("Validate code (lint and test)");
@@ -12,9 +12,12 @@ task("default", ["lint", "test"], function() {
 
 desc("Lint everything");
 task("lint", function() {
-	var passed = lint.validateFileList(lintFiles(), lintOptions(), lintGlobals());
-	if (!passed) fail("Lint failed");
-});
+	jshint.checkFiles({
+		files: [ "*.js", "src/**/*.js" ],
+		options: lintOptions(),
+		globals: lintGlobals()
+	}, complete, fail);
+}, { async: true });
 
 desc("Run tests");
 task("test", [], function() {
@@ -34,13 +37,6 @@ task("test", [], function() {
 function testFiles() {
 	var files = new jake.FileList();
 	files.include("src/**/_*_test.js");
-	return files.toArray();
-}
-
-function lintFiles() {
-	var files = new jake.FileList();
-	files.include("*.js");
-	files.include("src/**/*.js");
 	return files.toArray();
 }
 
