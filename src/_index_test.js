@@ -26,8 +26,7 @@ describe("Simplebuild module", function() {
 	describe("source validator", function() {
 
 		it("has descriptors", function() {
-			expect(jshint.checkCode.title).to.equal(messages.SOURCE_VALIDATOR_TITLE);
-			expect(jshint.checkCode.description).to.equal(messages.SOURCE_VALIDATOR_DESCRIPTION);
+			expect(jshint.checkCode.descriptors).to.eql(messages.SOURCE_VALIDATOR_DESCRIPTORS);
 		});
 
 		it("calls success() callback on success", function() {
@@ -79,8 +78,7 @@ describe("Simplebuild module", function() {
 
 	describe("file validator", function() {
 		it("has descriptors", function() {
-			expect(jshint.checkFiles.title).to.equal(messages.FILE_VALIDATOR_TITLE);
-			expect(jshint.checkFiles.description).to.equal(messages.FILE_VALIDATOR_DESCRIPTION);
+			expect(jshint.checkFiles.descriptors).to.eql(messages.FILE_VALIDATOR_DESCRIPTORS);
 		});
 
 		it("calls success() callback on success", function() {

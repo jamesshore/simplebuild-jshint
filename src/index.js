@@ -15,9 +15,7 @@ exports.checkCode = function checkCode(options, success, failure) {
 	else failure(messages.VALIDATION_FAILED);
 };
 
-exports.checkCode.title = messages.SOURCE_VALIDATOR_TITLE;
-exports.checkCode.description = messages.SOURCE_VALIDATOR_DESCRIPTION;
-
+exports.checkCode.descriptors = messages.SOURCE_VALIDATOR_DESCRIPTORS;
 
 exports.checkFiles = function checkFiles(options, success, failure) {
 	if (typeof options !== "object") return failure(messages.OPTIONS_MUST_BE_OBJECT);
@@ -31,5 +29,4 @@ exports.checkFiles = function checkFiles(options, success, failure) {
 	else failure(messages.VALIDATION_FAILED);
 };
 
-exports.checkFiles.title = messages.FILE_VALIDATOR_TITLE;
-exports.checkFiles.description = messages.FILE_VALIDATOR_DESCRIPTION;
+exports.checkFiles.descriptors = messages.FILE_VALIDATOR_DESCRIPTORS;
