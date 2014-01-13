@@ -17,20 +17,10 @@ Note that this library uses your existing JSHint installation.
 
 ## Usage
 
-This library provides two functions for running JSHint. The first takes raw source code; the second takes a list of files.
+This library provides these functions:
 
-### `checkCode(options, success, failure)`
-
-Run JSHint against raw source code. Any errors will be written to stdout.
-
-* `options`: an object containing the following properties:
-    * `code`: a string containing the source code to check.
-    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
-    * `globals` (optional): Global variables (equivalent to `options.globals`).
-
-* `success()` a function to call if the code validates successfully.
-
-* `failure(message)` a function to call if the code does not validate successfully. A simple error message is provided in the `message` parameter, but detailed error messages are output to stdout.
+* `checkFiles`: Run JSHint against a list of files.
+* `checkCode`: Run JSHint against raw source code.
 
 ### `checkFiles(options, success, failure)`
 
@@ -44,6 +34,19 @@ Run JSHint against a list of files. A dot will be written to stdout for each fil
 * `success()`: a function to call if the code validates successfully.
 
 * `failure(message)`: a function to call if the code does not validate successfully. A simple error message is provided in the `message` parameter, but detailed error messages are written to stdout.
+
+### `checkCode(options, success, failure)`
+
+Run JSHint against raw source code. Any errors will be written to stdout.
+
+* `options`: an object containing the following properties:
+    * `code`: a string containing the source code to check.
+    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
+    * `globals` (optional): Global variables (equivalent to `options.globals`).
+
+* `success()` a function to call if the code validates successfully.
+
+* `failure(message)` a function to call if the code does not validate successfully. A simple error message is provided in the `message` parameter, but detailed error messages are output to stdout.
 
 
 ## Examples

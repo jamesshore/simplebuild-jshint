@@ -5,18 +5,6 @@ var simplebuild = require("simplebuild");
 var jshint = require("./jshint_runner.js");
 var messages = require("./messages.js");
 
-exports.checkCode = function checkCode(options, success, failure) {
-	if (typeof options !== "object") return failure(messages.OPTIONS_MUST_BE_OBJECT);
-	if (options === null) return failure(messages.OPTIONS_MUST_NOT_BE_NULL);
-	if (options.code === undefined) return failure(messages.NO_CODE_OPTION);
-
-	var passed = jshint.validateSource(options.code, options.options, options.globals);
-	if (passed) success();
-	else failure(messages.VALIDATION_FAILED);
-};
-
-exports.checkCode.descriptors = messages.SOURCE_VALIDATOR_DESCRIPTORS;
-
 exports.checkFiles = function checkFiles(options, success, failure) {
 	if (typeof options !== "object") return failure(messages.OPTIONS_MUST_BE_OBJECT);
 	if (options === null) return failure(messages.OPTIONS_MUST_NOT_BE_NULL);
@@ -28,5 +16,16 @@ exports.checkFiles = function checkFiles(options, success, failure) {
 	if (passed) success();
 	else failure(messages.VALIDATION_FAILED);
 };
-
 exports.checkFiles.descriptors = messages.FILE_VALIDATOR_DESCRIPTORS;
+
+
+exports.checkCode = function checkCode(options, success, failure) {
+	if (typeof options !== "object") return failure(messages.OPTIONS_MUST_BE_OBJECT);
+	if (options === null) return failure(messages.OPTIONS_MUST_NOT_BE_NULL);
+	if (options.code === undefined) return failure(messages.NO_CODE_OPTION);
+
+	var passed = jshint.validateSource(options.code, options.options, options.globals);
+	if (passed) success();
+	else failure(messages.VALIDATION_FAILED);
+};
+exports.checkCode.descriptors = messages.SOURCE_VALIDATOR_DESCRIPTORS;
