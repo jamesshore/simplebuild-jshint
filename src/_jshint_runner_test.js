@@ -37,6 +37,11 @@ describe("JSHint runner", function() {
 		it("should respect globals", function() {
 			expect(lint.validateSource("a = 1;", { undef: true }, { a: true })).to.be(true);
 		});
+
+		it("DOES NOT support 'globals' option in place of globals parameter", function() {
+			var globals = { a: true };
+			expect(lint.validateSource("a = 1;", { undef: true, globals: globals }, {})).to.be(false);
+		});
 	});
 
 	describe("File list validation", function() {

@@ -29,7 +29,7 @@ Run JSHint against a list of files. A dot will be written to stdout for each fil
 * `options`: an object containing the following properties:
     * `files`: a string or array containing the files to check. Globs (`*`) and globstars (`**`) will be expanded to match files and directory trees respectively. Prepend `!` to exclude files.
     * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
-    * `globals` (optional): Global variables (equivalent to `options.globals`).
+    * `globals` (optional): Permitted global variables (for use with the `undef` option). Each variable should be set to `true` or `false`. If false, the variable is considered read-only.
 
 * `success()`: a function to call if the code validates successfully.
 
@@ -42,7 +42,7 @@ Run JSHint against raw source code. Any errors will be written to stdout.
 * `options`: an object containing the following properties:
     * `code`: a string containing the source code to check.
     * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
-    * `globals` (optional): Global variables (equivalent to `options.globals`).
+    * `globals` (optional): Permitted global variables (for use with the `undef` option). Each variable should be set to `true` or `false`. If false, the variable is considered read-only.
 
 * `success()` a function to call if the code validates successfully.
 
@@ -122,6 +122,13 @@ jshint.checkFiles({
 ## About Simplebuild
 
 This library is a simplebuild module. In addition to being used as a standalone library (as described above), it can also be used with simplebuild extensions and mappers. For more information about simplebuild, see [the Simplebuild GitHub page](https://github.com/jamesshore/simplebuild).
+
+
+## Version History
+
+__0.1.1:__ Corrected documentation error: options.globals is not actually a JSHint option.
+
+__0.1.0:__ `checkSource()` and `checkFiles()`.
 
 
 ## License

@@ -14,7 +14,7 @@ var OPTIONS_DESCRIPTOR = {
 	default: {}
 };
 var GLOBALS_DESCRIPTOR = {
-	description: "Global variables (equivalent to `options.globals`)",
+	description: "Permitted global variables (for use with the `undef` option). Each variable should be set to `true` or `false`. If false, the variable is considered read-only.",
 	default: {}
 };
 
