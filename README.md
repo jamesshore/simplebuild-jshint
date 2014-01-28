@@ -140,6 +140,8 @@ This library is a simplebuild module. In addition to being used as a standalone 
 
 ## Version History
 
+__0.2.0:__ `checkOneFile()`.
+
 __0.1.1:__ Corrected documentation error: options.globals is not actually a JSHint option.
 
 __0.1.0:__ `checkSource()` and `checkFiles()`.
