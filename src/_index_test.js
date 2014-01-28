@@ -80,6 +80,60 @@ describe("Simplebuild module", function() {
 		it("has descriptors", function() {
 			expect(jshint.checkOneFile.descriptors).to.eql(messages.ONE_FILE_VALIDATOR_DESCRIPTORS);
 		});
+
+		it("calls success() callback on success", function() {
+			testFiles.write("var a = 1;", function(filenames) {
+				jshint.checkOneFile({
+					file: filenames[0]
+				}, success, failure);
+				expectSuccess();
+			});
+		});
+
+		it("calls failure() callback on failure", function() {
+			testFiles.write("why must you torment me so?", function(filenames) {
+				jshint.checkOneFile({
+					file: filenames[0]
+				}, success, failure);
+			});
+			expectFailure(messages.VALIDATION_FAILED);
+		});
+
+		it("passes 'options' option through to JSHint", function() {
+			testFiles.write("a = 1;", function(filenames) {
+				jshint.checkOneFile({
+					file: filenames[0],
+					options: { undef: true },
+				}, success, failure);
+				expectFailure(messages.VALIDATION_FAILED);
+			});
+		});
+
+		it("passes 'global' option through to JSHint", function() {
+			testFiles.write("a = 1;", function(filenames) {
+				jshint.checkOneFile({
+					file: filenames[0],
+					options: { undef: true },
+					globals: { a: true }
+				}, success, failure);
+				expectSuccess();
+			});
+		});
+
+		it("fails when no file is provided", function() {
+			jshint.checkOneFile({}, success, failure);
+			expectFailure(messages.NO_FILE_OPTION);
+		});
+
+		it("fails when option variable isn't an object", function() {
+			jshint.checkOneFile("foo", success, failure);
+			expectFailure(messages.OPTIONS_MUST_BE_OBJECT);
+		});
+
+		it("fails when option variable is null", function() {
+			jshint.checkOneFile(null, success, failure);
+			expectFailure(messages.OPTIONS_MUST_NOT_BE_NULL);
+		});
 	});
 
 	describe("file list validator", function() {

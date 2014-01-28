@@ -20,7 +20,13 @@ exports.checkFiles.descriptors = messages.FILE_LIST_VALIDATOR_DESCRIPTORS;
 
 
 exports.checkOneFile = function checkOneFile(options, success, failure) {
+	if (typeof options !== "object") return failure(messages.OPTIONS_MUST_BE_OBJECT);
+	if (options === null) return failure(messages.OPTIONS_MUST_NOT_BE_NULL);
+	if (options.file === undefined) return failure(messages.NO_FILE_OPTION);
 
+	var passed = jshint.validateFile(options.file, options.options, options.globals);
+	if (passed) success();
+	else failure(messages.VALIDATION_FAILED);
 };
 exports.checkOneFile.descriptors = messages.ONE_FILE_VALIDATOR_DESCRIPTORS;
 
