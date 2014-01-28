@@ -44,6 +44,48 @@ describe("JSHint runner", function() {
 		});
 	});
 
+	describe("File validation", function() {
+		it("should respect options", function() {
+			testFiles.write("var a=1", function(filenames) {
+				expect(lint.validateFile(filenames[0], { asi: true })).to.be(true);
+			});
+		});
+
+		it("should respect globals", function() {
+			testFiles.write("a = 1;", function(filenames) {
+				expect(lint.validateFile(filenames[0], { undef: true }, { a: true })).to.be(true);
+			});
+		});
+
+		it("should fail when file is invalid", function() {
+			testFiles.write("YARR", function(filenames) {
+				expect(lint.validateFile(filenames[0])).to.be(false);
+			});
+		});
+
+		it("should report nothing on success", function() {
+			stdout.inspect(function(output) {
+				testFiles.write("var a=1;", function(filenames) {
+					lint.validateFile(filenames[0]);
+					expect(output).to.eql([]);
+				});
+			});
+		});
+
+		it("should report filename on failure (as well as normal error messages)", function() {
+			stdout.inspect(function(output) {
+				testFiles.write("foo;", function(filenames) {
+					lint.validateFile(filenames[0]);
+					expect(output).to.eql([
+						"\n" + filenames[0] + " failed\n",
+						"1: foo;\n",
+						"   Expected an assignment or function call and instead saw an expression.\n",
+					]);
+				});
+			});
+		});
+	});
+
 	describe("File list validation", function() {
 		it("should respect options", function() {
 			testFiles.write("var a=1", function(filenames) {
