@@ -76,9 +76,15 @@ describe("Simplebuild module", function() {
 		});
 	});
 
-	describe("file validator", function() {
+	describe("single file validator", function() {
 		it("has descriptors", function() {
-			expect(jshint.checkFiles.descriptors).to.eql(messages.FILE_VALIDATOR_DESCRIPTORS);
+			expect(jshint.checkOneFile.descriptors).to.eql(messages.ONE_FILE_VALIDATOR_DESCRIPTORS);
+		});
+	});
+
+	describe("file list validator", function() {
+		it("has descriptors", function() {
+			expect(jshint.checkFiles.descriptors).to.eql(messages.FILE_LIST_VALIDATOR_DESCRIPTORS);
 		});
 
 		it("calls success() callback on success", function() {

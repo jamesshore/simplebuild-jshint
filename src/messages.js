@@ -18,13 +18,26 @@ var GLOBALS_DESCRIPTOR = {
 	default: {}
 };
 
-// File validator
-exports.FILE_VALIDATOR_DESCRIPTORS = {
+// File list validator
+exports.FILE_LIST_VALIDATOR_DESCRIPTORS = {
 	title: "JSHint",
 	description: "Run JSHint against a list of files. A dot will be written to stdout for each file processed. Any errors will be written to stdout.",
 	options: {
 		files: {
 			description: "A string or array containing the files to check. Globs (`*`) and globstars (`**`) will be expanded to match files and directory trees respectively. Prepend `!` to exclude files.",
+		},
+		options: OPTIONS_DESCRIPTOR,
+		globals: GLOBALS_DESCRIPTOR
+	}
+};
+
+// One file validator
+exports.ONE_FILE_VALIDATOR_DESCRIPTORS = {
+	title: "JSHint",
+	description: "Run JSHint against a single file (it's useful for auto-generated build dependencies). Any errors will be written to stdout.",
+	options: {
+		file: {
+			description: "A string containing the path to the file to check."
 		},
 		options: OPTIONS_DESCRIPTOR,
 		globals: GLOBALS_DESCRIPTOR

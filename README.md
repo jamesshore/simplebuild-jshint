@@ -20,6 +20,7 @@ Note that this library uses your existing JSHint installation.
 This library provides these functions:
 
 * `checkFiles`: Run JSHint against a list of files.
+* `checkOneFile`: Run JSHint against a single file (it's useful for auto-generated build dependencies).
 * `checkCode`: Run JSHint against raw source code.
 
 ### `checkFiles(options, success, failure)`
@@ -28,6 +29,19 @@ Run JSHint against a list of files. A dot will be written to stdout for each fil
 
 * `options`: an object containing the following properties:
     * `files`: a string or array containing the files to check. Globs (`*`) and globstars (`**`) will be expanded to match files and directory trees respectively. Prepend `!` to exclude files.
+    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
+    * `globals` (optional): Permitted global variables (for use with the `undef` option). Each variable should be set to `true` or `false`. If false, the variable is considered read-only.
+
+* `success()`: a function to call if the code validates successfully.
+
+* `failure(message)`: a function to call if the code does not validate successfully. A simple error message is provided in the `message` parameter, but detailed error messages are written to stdout.
+
+### `checkOneFile(options, success, failure)`
+
+Run JSHint against a single file (it's useful for auto-generated build dependencies).
+
+* `options`: an object containing the following properties:
+    * `file`: a string containing the path to the file to check.
     * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
     * `globals` (optional): Permitted global variables (for use with the `undef` option). Each variable should be set to `true` or `false`. If false, the variable is considered read-only.
 
