@@ -2,9 +2,6 @@
 "use strict";
 
 var expect = require("expect.js");
-var assert = require("assert");
-var fs = require("fs");
-
 var lint = require("./jshint_runner.js");
 var stdout = require("./__stdout.js");
 var testFiles = require("./__test_files.js");
