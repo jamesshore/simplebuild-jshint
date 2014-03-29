@@ -9,6 +9,13 @@ exports.NO_FILE_OPTION = "Need 'file' option containing path to file to check.";
 exports.NO_FILES_OPTION = "Need 'files' option containing array of filenames (or globs) to check.";
 exports.NO_CODE_OPTION = "Need 'code' option containing source code to check.";
 
+exports.MODULE_DESCRIPTORS = {
+	name: "simplebuild-jshint",
+	summary: "A simple library for automating JSHint.",
+	description: "[JSHint](http://www.jshint.com/) is a static analysis (\"lint\") tool for JavaScript. It analyzes JavaScript source code for common mistakes. This library provides a simple interface to JSHint that's convenient to use with task automation tools such as [Grunt](http://gruntjs.com/) or [Jake](https://github.com/mde/jake).	",
+	copyright: "Copyright (c) 2012-2014 James Shore"
+};
+
 // Generic descriptors
 var OPTIONS_DESCRIPTOR = {
 	description: "JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/)).",
