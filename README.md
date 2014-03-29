@@ -9,10 +9,9 @@ A simple library for automating JSHint.
 
 This is a Node.js library. Install Node, then:
 
-1. `npm install simplebuild-jshint` (add `--save` or `--save-dev` if you want)
-2. `npm install jshint`
+`npm install simplebuild-jshint` (add `--save` or `--save-dev` if you want)
 
-Note that this library uses your existing JSHint installation.
+Note that this library uses your existing JSHint installation. (JSHint will be installed if needed.)
 
 
 ## Usage
@@ -139,6 +138,8 @@ This library is a simplebuild module. In addition to being used as a standalone 
 
 
 ## Version History
+
+__0.3.0:__ Added `jshint` as a peer dependency. It no longer needs to be installed separately.
 
 __0.2.0:__ `checkOneFile()`.
 
