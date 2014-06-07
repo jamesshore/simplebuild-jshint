@@ -3,7 +3,7 @@
 
 var expect = require("expect.js");
 var lint = require("./jshint_runner.js");
-var stdout = require("./__stdout.js");
+var stdout = require("test-console").stdout;
 var testFiles = require("./__test_files.js");
 
 describe("JSHint runner", function() {
