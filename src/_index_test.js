@@ -4,7 +4,7 @@
 var expect = require("expect.js");
 var jshint = require("./index.js");
 var messages = require("./messages.js");
-var stdout = require("./__stdout.js");
+var stdout = require("test-console").stdout;
 var testFiles = require("./__test_files.js");
 
 describe("Simplebuild module", function() {
