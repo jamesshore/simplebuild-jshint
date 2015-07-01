@@ -139,6 +139,8 @@ This library is a simplebuild module. In addition to being used as a standalone 
 
 ## Version History
 
+__0.3.1:__ Handles error objects with no evidence (first seen in JSHint 2.8.0).
+
 __0.3.0:__ Added `jshint` as a peer dependency. It no longer needs to be installed separately.
 
 __0.2.0:__ `checkOneFile()`.
