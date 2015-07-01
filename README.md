@@ -148,11 +148,24 @@ __0.1.1:__ Corrected documentation error: options.globals is not actually a JSHi
 __0.1.0:__ `checkSource()` and `checkFiles()`.
 
 
+## Contributors
+
+Created by James Shore.
+
+### Release Process
+
+1. Update version history in readme
+2. Ensure clean build: `./jake.sh`
+3. Update npm version: `npm version [major|minor|patch]`
+4. Release to npm: `npm publish`
+5. Release to github: `git push && git push --tags`
+
+
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2012-2014 James Shore
+Copyright (c) 2012-2015 James Shore
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
