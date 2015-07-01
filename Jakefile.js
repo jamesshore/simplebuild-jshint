@@ -1,9 +1,9 @@
-// Copyright (c) 2014 Titanium I.T. LLC. All rights reserved. For license, see "README" or "LICENSE" file.
+// Copyright (c) 2014-2015 Titanium I.T. LLC. All rights reserved. For license, see "README" or "LICENSE" file.
 /*global desc, task, jake, fail, complete, directory*/
 "use strict";
 
 var jshint = require("./src/index.js");
-var Mocha = require("mocha");
+var mocha = require("./build/mocha_runner");
 
 desc("Validate code (lint and test)");
 task("default", ["lint", "test"], function() {
@@ -21,17 +21,13 @@ task("lint", function() {
 
 desc("Run tests");
 task("test", [], function() {
-	var mocha = new Mocha({ui: "bdd"});
-	testFiles().forEach(mocha.addFile.bind(mocha));
-
-	var failures = false;
-	mocha.run()
-	.on("fail", function() {
-		failures = true;
-	}).on("end", function() {
-		if (failures) fail("Tests failed");
-		complete();
-	});
+	mocha.runTests({
+		files: "src/**/_*_test.js",
+		options: {
+			ui: "bdd",
+			reporter: "dot"
+		}
+	}, complete, fail);
 }, {async: true});
 
 function testFiles() {
