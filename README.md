@@ -28,7 +28,7 @@ Run JSHint against a list of files. A dot will be written to stdout for each fil
 
 * `options`: an object containing the following properties:
     * `files`: a string or array containing the files to check. Globs (`*`) and globstars (`**`) will be expanded to match files and directory trees respectively. Prepend `!` to exclude files.
-    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
+    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/)).
     * `globals` (optional): Permitted global variables (for use with the `undef` option). Each variable should be set to `true` or `false`. If false, the variable is considered read-only.
 
 * `success()`: a function to call if the code validates successfully.
@@ -41,7 +41,7 @@ Run JSHint against a single file (it's useful for auto-generated build dependenc
 
 * `options`: an object containing the following properties:
     * `file`: a string containing the path to the file to check.
-    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
+    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/)).
     * `globals` (optional): Permitted global variables (for use with the `undef` option). Each variable should be set to `true` or `false`. If false, the variable is considered read-only.
 
 * `success()`: a function to call if the code validates successfully.
@@ -54,7 +54,7 @@ Run JSHint against raw source code. Any errors will be written to stdout.
 
 * `options`: an object containing the following properties:
     * `code`: a string containing the source code to check.
-    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/).
+    * `options` (optional): JSHint options (see [the JSHint documentation](http://www.jshint.com/docs/options/)).
     * `globals` (optional): Permitted global variables (for use with the `undef` option). Each variable should be set to `true` or `false`. If false, the variable is considered read-only.
 
 * `success()` a function to call if the code validates successfully.
