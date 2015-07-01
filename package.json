@@ -27,7 +27,7 @@
   "devDependencies": {
     "expect.js": "~0.2.0",
     "jake": "~0.7.6",
-    "jshint": "^2.4.4",
+    "jshint": "^2.8.0",
     "mocha": "~1.16.2",
     "test-console": "^1.0.0"
   },

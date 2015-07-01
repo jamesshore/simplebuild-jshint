@@ -15,8 +15,6 @@ exports.validateFile = function(filename, options, globals) {
 	return exports.validateSource(sourceCode, options, globals, filename);
 };
 
-//TODO: validateFileList() should use validateFile()
-
 exports.validateFileList = function(fileList, options, globals) {
 	var pass = true;
 	fileList.forEach(function(filename) {
@@ -33,7 +31,10 @@ function reportErrors(name) {
 	name = name ? name + " " : "";
 	console.log("\n" + name + "failed");
 	jshint.errors.forEach(function(error) {
-		console.log(error.line + ": " + error.evidence.trim());
+		if (error === null) return;
+		var evidence = (error.evidence !== undefined) ? ": " + error.evidence.trim() : "";
+
+		console.log(error.line + evidence);
 		console.log("   " + error.reason);
 	});
 }

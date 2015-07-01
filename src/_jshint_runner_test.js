@@ -176,8 +176,20 @@ describe("JSHint runner", function() {
 			});
 		});
 
-		// To do: Some edge cases that I don't know how to trigger, so haven't tested or supported:
-		// 1- two reasons in a row (line number & evidence undefined); may not occur in current version
-		// 2- null element at end of errors array; occurs when JSHint catches exception
+		it("should handle poorly-formatted error objects (introduced in JSHint 2.8.0)", function() {
+			stdout.inspectSync(function(output) {
+				lint.validateSource("a?");
+				expect(output).to.eql([
+					"\nfailed\n",
+					"1: a?\n",
+					"   Unexpected early end of program.\n",
+					"1\n",
+					"   Unrecoverable syntax error. (100% scanned).\n"
+				]);
+			});
+		});
+
+		// To do: An edge case that I don't know how to trigger, so haven't tested or supported:
+		// 1. undefined line number; may not occur in current version
 	});
 });
