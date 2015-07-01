@@ -25,9 +25,9 @@ describe("Simplebuild module", function() {
 
 	describe("source validator", function() {
 
-		it("has descriptors", function() {
-			expect(jshint.checkCode.descriptors).to.eql(messages.SOURCE_VALIDATOR_DESCRIPTORS);
-		});
+		//it("has descriptors", function() {
+		//	expect(jshint.checkCode.descriptors).to.eql(messages.SOURCE_VALIDATOR_DESCRIPTORS);
+		//});
 
 		it("calls success() callback on success", function() {
 			jshint.checkCode({
@@ -77,9 +77,9 @@ describe("Simplebuild module", function() {
 	});
 
 	describe("single file validator", function() {
-		it("has descriptors", function() {
-			expect(jshint.checkOneFile.descriptors).to.eql(messages.ONE_FILE_VALIDATOR_DESCRIPTORS);
-		});
+		//it("has descriptors", function() {
+		//	expect(jshint.checkOneFile.descriptors).to.eql(messages.ONE_FILE_VALIDATOR_DESCRIPTORS);
+		//});
 
 		it("calls success() callback on success", function() {
 			testFiles.write("var a = 1;", function(filenames) {
@@ -137,9 +137,9 @@ describe("Simplebuild module", function() {
 	});
 
 	describe("file list validator", function() {
-		it("has descriptors", function() {
-			expect(jshint.checkFiles.descriptors).to.eql(messages.FILE_LIST_VALIDATOR_DESCRIPTORS);
-		});
+		//it("has descriptors", function() {
+		//	expect(jshint.checkFiles.descriptors).to.eql(messages.FILE_LIST_VALIDATOR_DESCRIPTORS);
+		//});
 
 		it("calls success() callback on success", function() {
 			testFiles.write("var a = 1;", function(filenames) {

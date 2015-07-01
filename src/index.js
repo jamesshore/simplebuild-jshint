@@ -16,7 +16,7 @@ exports.checkFiles = function checkFiles(options, success, failure) {
 	if (passed) success();
 	else failure(messages.VALIDATION_FAILED);
 };
-exports.checkFiles.descriptors = messages.FILE_LIST_VALIDATOR_DESCRIPTORS;
+//exports.checkFiles.descriptors = messages.FILE_LIST_VALIDATOR_DESCRIPTORS;
 
 
 exports.checkOneFile = function checkOneFile(options, success, failure) {
@@ -28,7 +28,7 @@ exports.checkOneFile = function checkOneFile(options, success, failure) {
 	if (passed) success();
 	else failure(messages.VALIDATION_FAILED);
 };
-exports.checkOneFile.descriptors = messages.ONE_FILE_VALIDATOR_DESCRIPTORS;
+//exports.checkOneFile.descriptors = messages.ONE_FILE_VALIDATOR_DESCRIPTORS;
 
 
 exports.checkCode = function checkCode(options, success, failure) {
@@ -40,4 +40,4 @@ exports.checkCode = function checkCode(options, success, failure) {
 	if (passed) success();
 	else failure(messages.VALIDATION_FAILED);
 };
-exports.checkCode.descriptors = messages.SOURCE_VALIDATOR_DESCRIPTORS;
+//exports.checkCode.descriptors = messages.SOURCE_VALIDATOR_DESCRIPTORS;
