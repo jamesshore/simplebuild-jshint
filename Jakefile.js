@@ -7,13 +7,14 @@ var mocha = require("./build/mocha_runner");
 
 desc("Validate code (lint and test)");
 task("default", ["lint", "test"], function() {
-	console.log("\n\nOK");
+	console.log("\n\nBUILD OK");
 });
 
 desc("Lint everything");
 task("lint", function() {
+	process.stdout.write("Linting JavaScript: ");
 	jshint.checkFiles({
-		files: [ "*.js", "src/**/*.js" ],
+		files: [ "*.js", "src/**/*.js", "build/**/*.js" ],
 		options: lintOptions(),
 		globals: lintGlobals()
 	}, complete, fail);
@@ -21,6 +22,7 @@ task("lint", function() {
 
 desc("Run tests");
 task("test", [], function() {
+	console.log("Testing JavaScript:");
 	mocha.runTests({
 		files: "src/**/_*_test.js",
 		options: {
