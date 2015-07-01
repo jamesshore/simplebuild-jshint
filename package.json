@@ -25,11 +25,11 @@
   },
   "homepage": "https://github.com/jamesshore/simplebuild-jshint",
   "devDependencies": {
-    "jake": "~0.7.6",
-    "mocha": "~1.16.2",
     "expect.js": "~0.2.0",
+    "jake": "~0.7.6",
     "jshint": "^2.4.4",
-    "test-console": "^0.7.1"
+    "mocha": "~1.16.2",
+    "test-console": "^1.0.0"
   },
   "dependencies": {
     "simplebuild": "~0.2.0"
