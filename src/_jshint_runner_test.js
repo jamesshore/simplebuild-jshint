@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2014 James Shore - See README.txt for license */
+/* Copyright (c) 2012-2015 James Shore - See README.txt for license */
 "use strict";
 
 var expect = require("expect.js");
@@ -73,11 +73,7 @@ describe("JSHint runner", function() {
 			stdout.inspectSync(function(output) {
 				testFiles.write("foo;", function(filenames) {
 					lint.validateFile(filenames[0]);
-					expect(output).to.eql([
-						"\n" + filenames[0] + " failed\n",
-						"1: foo;\n",
-						"   Expected an assignment or function call and instead saw an expression.\n",
-					]);
+					expect(output[0]).to.equal("\n" + filenames[0] + " failed\n");
 				});
 			});
 		});
@@ -151,7 +147,7 @@ describe("JSHint runner", function() {
 				expect(output).to.eql([
 					"\nfailed\n",
 					"1: foo;\n",
-					"   Expected an assignment or function call and instead saw an expression.\n",
+					"   Expected an assignment or function call and instead saw an expression. (W030)\n",
 				]);
 			});
 		});
@@ -162,9 +158,9 @@ describe("JSHint runner", function() {
 				expect(output).to.eql([
 					"\nfailed\n",
 					"1: foo;\n",
-					"   Expected an assignment or function call and instead saw an expression.\n",
+					"   Expected an assignment or function call and instead saw an expression. (W030)\n",
 					"2: bar()\n",
-					"   Missing semicolon.\n"
+					"   Missing semicolon. (W033)\n"
 				]);
 			});
 		});
@@ -182,9 +178,9 @@ describe("JSHint runner", function() {
 				expect(output).to.eql([
 					"\nfailed\n",
 					"1: a?\n",
-					"   Unexpected early end of program.\n",
+					"   Unexpected early end of program. (E006)\n",
 					"1\n",
-					"   Unrecoverable syntax error. (100% scanned).\n"
+					"   Unrecoverable syntax error. (100% scanned). (E041)\n"
 				]);
 			});
 		});

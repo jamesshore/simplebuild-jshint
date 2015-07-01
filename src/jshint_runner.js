@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2014 James Shore - See README.txt for license */
+/* Copyright (c) 2012-2015 James Shore - See README.txt for license */
 "use strict";
 
 var jshint = require("jshint").JSHINT;
@@ -35,7 +35,7 @@ function reportErrors(name) {
 		var evidence = (error.evidence !== undefined) ? ": " + error.evidence.trim() : "";
 
 		console.log(error.line + evidence);
-		console.log("   " + error.reason);
+		console.log("   " + error.reason + " (" + error.code + ")");
 	});
 }
 
