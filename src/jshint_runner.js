@@ -1,6 +1,9 @@
 /* Copyright (c) 2012-2015 James Shore - See README.txt for license */
 "use strict";
 
+/* Run JSHint */
+
+
 var jshint = require("jshint").JSHINT;
 var fs = require("fs");
 
