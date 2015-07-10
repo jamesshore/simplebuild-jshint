@@ -6,6 +6,7 @@
 
 var jshint = require("jshint").JSHINT;
 var fs = require("fs");
+var errorTranslator = require("./error_translator.js");
 
 exports.validateSource = function(sourceCode, options, globals, name) {
 	var pass = jshint(sourceCode, options, globals);
@@ -33,12 +34,7 @@ function reportErrors(name) {
 	// The errors from the last run are stored globally on the jshint object. Yeah.
 	name = name ? name + " " : "";
 	console.log("\n" + name + "failed");
-	jshint.errors.forEach(function(error) {
-		if (error === null) return;
-		var evidence = (error.evidence !== undefined) ? ": " + error.evidence.trim() : "";
-
-		console.log(error.line + evidence);
-		console.log("   " + error.reason + " (" + error.code + ")");
+	errorTranslator.translate(jshint.errors).forEach(function(errorLine) {
+		console.log(errorLine);
 	});
 }
-
