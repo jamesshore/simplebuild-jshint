@@ -152,40 +152,5 @@ describe("JSHint runner", function() {
 			});
 		});
 
-		it("should report all errors", function() {
-			stdout.inspectSync(function(output) {
-				lint.validateSource("foo;\nbar()");
-				expect(output).to.eql([
-					"\nfailed\n",
-					"1: foo;\n",
-					"   Expected an assignment or function call and instead saw an expression. (W030)\n",
-					"2: bar()\n",
-					"   Missing semicolon. (W033)\n"
-				]);
-			});
-		});
-
-		it("should trim whitespace from source code", function() {
-			stdout.inspectSync(function(output) {
-				lint.validateSource("   foo()\t \n");
-				expect(output[1]).to.eql("1: foo()\n");
-			});
-		});
-
-		it("should handle poorly-formatted error objects (introduced in JSHint 2.8.0)", function() {
-			stdout.inspectSync(function(output) {
-				lint.validateSource("a?");
-				expect(output).to.eql([
-					"\nfailed\n",
-					"1: a?\n",
-					"   Unexpected early end of program. (E006)\n",
-					"1\n",
-					"   Unrecoverable syntax error. (100% scanned). (E041)\n"
-				]);
-			});
-		});
-
-		// To do: An edge case that I don't know how to trigger, so haven't tested or supported:
-		// 1. undefined line number; may not occur in current version
 	});
 });
