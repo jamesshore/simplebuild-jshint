@@ -10,9 +10,10 @@ exports.translate = function translate(errors) {
 	errors.forEach(function(error) {
 		if (error === null) return;
 		var evidence = (error.evidence !== undefined) ? ": " + error.evidence.trim() : "";
+		var code = (error.code !== undefined) ? " (" + error.code + ")" : "";
 
 		result.push(error.line + evidence);
-		result.push("   " + error.reason + " (" + error.code + ")");
+		result.push("   " + error.reason + code);
 	});
 
 	return result;

@@ -69,10 +69,25 @@ describe("Error translation", function() {
 		]);
 	});
 
+	it("handles missing 'code' property (occurs in JSHint 0.9.1)", function() {
+		expect(translator.translate([
+			{
+				line: 1,
+				evidence: "evidence",
+				reason: "reason"
+			}
+		])).to.eql([
+			"1: evidence",
+			"   reason"
+		]);
+	});
+
 	it("handles null errors (occurs in JSHint 2.8.0 when source code is 'a?')", function() {
 		expect(translator.translate([
 			null
 		])).to.eql([]);
 	});
+
+
 
 });
