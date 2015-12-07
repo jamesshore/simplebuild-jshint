@@ -2,7 +2,7 @@
 "use strict";
 
 var fs = require("fs");
-var assert = require("assert");
+var assert = require("./assert.js");
 
 var testRoot = "temp_files/file-list-validation.js-";
 
