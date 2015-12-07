@@ -25,10 +25,10 @@
 			var options = simplebuild.normalizeOptions(userOptions, DEFAULT_OPTIONS, types);
 			var files = simplebuild.deglobSync(options.files);
 
-			var passed = jshint.validateFileList(files, options.options, options.globals);
-
-			if (passed) succeed();
-			else fail(messages.VALIDATION_FAILED);
+			jshint.validateFileList(files, options.options, options.globals, function(passed) {
+				if (passed) return succeed();
+				else return fail(messages.VALIDATION_FAILED);
+			});
 		}
 		catch(err) {
 			return fail(err.message);

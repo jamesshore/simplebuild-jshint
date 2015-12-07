@@ -20,7 +20,7 @@
 		return exports.validateSource(sourceCode, options, globals, filename);
 	};
 
-	exports.validateFileList = function(fileList, options, globals) {
+	exports.validateFileList = function(fileList, options, globals, callback) {
 		var pass = true;
 		fileList.forEach(function(filename) {
 			process.stdout.write(".");
@@ -28,7 +28,8 @@
 			pass = exports.validateSource(sourceCode, options, globals, filename) && pass;
 		});
 		process.stdout.write("\n");
-		return pass;
+
+		return callback(pass);
 	};
 
 	function reportErrors(name) {
