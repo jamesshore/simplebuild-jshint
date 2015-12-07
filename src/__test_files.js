@@ -6,7 +6,7 @@ var assert = require("./assert.js");
 
 var testRoot = "temp_files/file-list-validation.js-";
 
-exports.write = function write() {
+exports.writeSync = function writeSync() {
 	var fileBodies = allButLastArgument(arguments);
 	var callback = lastArgument(arguments);
 

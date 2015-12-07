@@ -7,6 +7,7 @@
 
 	var jshint = require("jshint").JSHINT;
 	var fs = require("fs");
+	var async = require("async");
 	var errorTranslator = require("./error_translator.js");
 
 	exports.validateSource = function(sourceCode, options, globals, name) {
@@ -34,6 +35,32 @@
 		process.stdout.write("\n");
 		return callback(pass);
 	};
+
+	//exports.validateFileList = function(fileList, options, globals, callback) {
+	//	async.mapSeries(fileList, function(filename, mapCallback) {
+	//		try {
+	//			process.stdout.write(".");
+	//			var sourceCode = fs.readFileSync(filename, "utf8");
+	//			mapCallback(null, exports.validateSource(sourceCode, options, globals, filename));
+	//		}
+	//		catch (err) {
+	//			mapCallback(err);
+	//		}
+	//	}, function(err, results) {
+	//		if (err) {
+	//			console.log(err.stack);
+	//			return callback(false);
+	//		}
+	//
+	//		var pass = results.reduce(function(pass, result) {
+	//			return pass && result;
+	//		}, true);
+	//
+	//		process.stdout.write("\n");
+	//		return callback(pass);
+	//	});
+	//};
+
 
 	function reportErrors(name) {
 		// The errors from the last run are stored globally on the jshint object. Yeah.

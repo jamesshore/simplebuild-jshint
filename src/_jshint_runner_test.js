@@ -11,13 +11,13 @@
 
 		var restoreStdout;
 
-		beforeEach(function() {
-			restoreStdout = stdout.ignore();
-		});
-
-		afterEach(function() {
-			restoreStdout();
-		});
+		//beforeEach(function() {
+		//	restoreStdout = stdout.ignore();
+		//});
+		//
+		//afterEach(function() {
+		//	restoreStdout();
+		//});
 
 		describe("Source code validation", function() {
 			it("should pass good source code", function() {
@@ -44,26 +44,26 @@
 
 		describe("File validation", function() {
 			it("should respect options", function() {
-				testFiles.write("var a=1", function(filenames) {
+				testFiles.writeSync("var a=1", function(filenames) {
 					assert.ok(runner.validateFile(filenames[0], { asi: true }));
 				});
 			});
 
 			it("should respect globals", function() {
-				testFiles.write("a = 1;", function(filenames) {
+				testFiles.writeSync("a = 1;", function(filenames) {
 					assert.ok(runner.validateFile(filenames[0], { undef: true }, { a: true }));
 				});
 			});
 
 			it("should fail when file is invalid", function() {
-				testFiles.write("YARR", function(filenames) {
+				testFiles.writeSync("YARR", function(filenames) {
 					assert.notOk(runner.validateFile(filenames[0]));
 				});
 			});
 
 			it("should report nothing on success", function() {
 				stdout.inspectSync(function(output) {
-					testFiles.write("var a=1;", function(filenames) {
+					testFiles.writeSync("var a=1;", function(filenames) {
 						runner.validateFile(filenames[0]);
 						assert.deepEqual(output, []);
 					});
@@ -72,7 +72,7 @@
 
 			it("should report filename on failure (as well as normal error messages)", function() {
 				stdout.inspectSync(function(output) {
-					testFiles.write("foo;", function(filenames) {
+					testFiles.writeSync("foo;", function(filenames) {
 						runner.validateFile(filenames[0]);
 						assert.equal(output[0], "\n" + filenames[0] + " failed\n");
 					});
@@ -81,35 +81,35 @@
 		});
 
 
-		describe("File list validation", function() {
+		describe.only("File list validation", function() {
 
 			it("should respect options", function(done) {
-				testFiles.write("var a=1", function(filenames) {
+				testFiles.writeSync("var a=1", function(filenames) {
 					runner.validateFileList(filenames, { asi: true }, {}, assertPass(done));
 				});
 			});
 
 			it("should respect globals", function(done) {
-				testFiles.write("a = 1;", function(filenames) {
+				testFiles.writeSync("a = 1;", function(filenames) {
 					runner.validateFileList(filenames, { undef: true }, { a: true }, assertPass(done));
 				});
 			});
 
 			it("should pass when all files are valid", function(done) {
-				testFiles.write("var a=1;", "var b=1;", "var c=1;", function(filenames) {
+				testFiles.writeSync("var a=1;", "var b=1;", "var c=1;", function(filenames) {
 					runner.validateFileList(filenames, {}, {}, assertPass(done));
 				});
 			});
 
 			it("should fail when any file is invalid", function(done) {
-				testFiles.write("var a=1;", "var b=1;", "YARR", "var d=1;", function(filenames) {
+				testFiles.writeSync("var a=1;", "var b=1;", "YARR", "var d=1;", function(filenames) {
 					runner.validateFileList(filenames, {}, {}, assertFail(done));
 				});
 			});
 
 			it("should report one dot per file", function(done) {
 				var inspect = stdout.inspect();
-				testFiles.write("var a=1;", "var b=1;", "var c=1;", function(filenames) {
+				testFiles.writeSync("var a=1;", "var b=1;", "var c=1;", function(filenames) {
 					runner.validateFileList(filenames, {}, {}, function() {
 						inspect.restore();
 						assert.deepEqual(inspect.output, [".", ".", ".", "\n"]);
@@ -120,7 +120,7 @@
 
 			it("should validate later files even if early file fails", function(done) {
 				var inspect = stdout.inspect();
-				testFiles.write("YARR=1", "var b=1;", "var c=1;", function(filenames) {
+				testFiles.writeSync("YARR=1", "var b=1;", "var c=1;", function(filenames) {
 					runner.validateFileList(filenames, {}, {}, function() {
 						inspect.restore();
 						assert.equal(inspect.output[0], ".");

@@ -33,6 +33,7 @@
     "test-console": "^1.0.0"
   },
   "dependencies": {
+    "async": "^1.5.0",
     "simplebuild": "^0.5.0"
   },
   "peerDependencies": {

@@ -162,6 +162,8 @@ Created by James Shore.
 
 ### Release Process
 
+//TODO: test "file not exist" error handling with checkFiles() 
+
 1. Update version history in readme and check in
 2. Ensure clean build: `./jake.sh`
 3. Update npm version: `npm version [major|minor|patch]`

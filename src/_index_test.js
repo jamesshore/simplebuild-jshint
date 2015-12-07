@@ -85,7 +85,7 @@ describe("Simplebuild module", function() {
 		//});
 
 		it("calls success() callback on success", function() {
-			testFiles.write("var a = 1;", function(filenames) {
+			testFiles.writeSync("var a = 1;", function(filenames) {
 				jshint.checkOneFile({
 					file: filenames[0]
 				}, success, failure);
@@ -94,7 +94,7 @@ describe("Simplebuild module", function() {
 		});
 
 		it("calls failure() callback on failure", function() {
-			testFiles.write("why must you torment me so?", function(filenames) {
+			testFiles.writeSync("why must you torment me so?", function(filenames) {
 				jshint.checkOneFile({
 					file: filenames[0]
 				}, success, failure);
@@ -103,7 +103,7 @@ describe("Simplebuild module", function() {
 		});
 
 		it("passes 'options' option through to JSHint", function() {
-			testFiles.write("a = 1;", function(filenames) {
+			testFiles.writeSync("a = 1;", function(filenames) {
 				jshint.checkOneFile({
 					file: filenames[0],
 					options: { undef: true },
@@ -113,7 +113,7 @@ describe("Simplebuild module", function() {
 		});
 
 		it("passes 'global' option through to JSHint", function() {
-			testFiles.write("a = 1;", function(filenames) {
+			testFiles.writeSync("a = 1;", function(filenames) {
 				jshint.checkOneFile({
 					file: filenames[0],
 					options: { undef: true },
@@ -148,7 +148,7 @@ describe("Simplebuild module", function() {
 		//});
 
 		it("calls success() callback on success", function() {
-			testFiles.write("var a = 1;", function(filenames) {
+			testFiles.writeSync("var a = 1;", function(filenames) {
 				jshint.checkFiles({
 					files: filenames
 				}, success, failure);
@@ -157,7 +157,7 @@ describe("Simplebuild module", function() {
 		});
 
 		it("calls failure() callback on failure", function() {
-			testFiles.write("bargledy-bargle", function(filenames) {
+			testFiles.writeSync("bargledy-bargle", function(filenames) {
 				jshint.checkFiles({
 					files: filenames
 				}, success, failure);
@@ -166,7 +166,7 @@ describe("Simplebuild module", function() {
 		});
 
 		it("supports globs", function() {
-			testFiles.write("var a = 1;", "bargledy-bargle", function(filenames) {
+			testFiles.writeSync("var a = 1;", "bargledy-bargle", function(filenames) {
 				jshint.checkFiles({
 					files: [ "temp_files/*" ]
 				}, success, failure);
@@ -175,7 +175,7 @@ describe("Simplebuild module", function() {
 		});
 
 		it("passes 'options' option through to JSHint", function() {
-			testFiles.write("a = 1;", function(filenames) {
+			testFiles.writeSync("a = 1;", function(filenames) {
 				jshint.checkFiles({
 					files: filenames,
 					options: { undef: true },
@@ -185,7 +185,7 @@ describe("Simplebuild module", function() {
 		});
 
 		it("passes 'global' option through to JSHint", function() {
-			testFiles.write("a = 1;", function(filenames) {
+			testFiles.writeSync("a = 1;", function(filenames) {
 				jshint.checkFiles({
 					files: filenames,
 					options: { undef: true },
