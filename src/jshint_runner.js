@@ -25,18 +25,11 @@
 		async.mapSeries(fileList, mapIt, reduceIt);
 
 		function mapIt(filename, mapCallback) {
-			try {
-				process.stdout.write(".");
-				//fs.readFile(filename, "utf8", function(err, sourceCode) {
-				//	if (err) return err;
-				//	return mapCallback(null, exports.validateSource(sourceCode, options, globals, filename));
-				//});
-				var sourceCode = fs.readFileSync(filename, "utf8");
+			process.stdout.write(".");
+			fs.readFile(filename, "utf8", function(err, sourceCode) {
+				if (err) return mapCallback(err);
 				return mapCallback(null, exports.validateSource(sourceCode, options, globals, filename));
-			}
-			catch (err) {
-				return mapCallback(err);
-			}
+			});
 		}
 
 		function reduceIt(err, results) {
