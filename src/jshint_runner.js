@@ -21,14 +21,17 @@
 	};
 
 	exports.validateFileList = function(fileList, options, globals, callback) {
-		var pass = true;
-		fileList.forEach(function(filename) {
+		var results = fileList.map(function(filename) {
 			process.stdout.write(".");
 			var sourceCode = fs.readFileSync(filename, "utf8");
-			pass = exports.validateSource(sourceCode, options, globals, filename) && pass;
+			return exports.validateSource(sourceCode, options, globals, filename);
 		});
-		process.stdout.write("\n");
 
+		var pass = results.reduce(function(pass, result) {
+			return pass && result;
+		}, true);
+
+		process.stdout.write("\n");
 		return callback(pass);
 	};
 
