@@ -33,7 +33,7 @@
 		}, true);
 
 		process.stdout.write("\n");
-		return callback(pass);
+		return callback(null, pass);
 	};
 
 	//exports.validateFileList = function(fileList, options, globals, callback) {

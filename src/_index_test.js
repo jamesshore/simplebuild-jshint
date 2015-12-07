@@ -134,6 +134,13 @@ describe("Simplebuild module", function() {
 			jshint.checkOneFile(null, success, failure);
 			assertFailure();
 		});
+
+		it("fails when file doesn't exist", function() {
+			jshint.checkOneFile({
+				file: "no-such-file.js"
+			}, success, failure);
+			assertFailure("ENOENT: no such file or directory, open 'no-such-file.js'");
+		});
 	});
 
 	describe("file list validator", function() {
@@ -203,6 +210,14 @@ describe("Simplebuild module", function() {
 			jshint.checkFiles(null, success, failure);
 			assertFailure();
 		});
+
+		it("skips files that don't exist", function() {
+			jshint.checkFiles({
+				files: "no-such-file.js"
+			}, success, failure);
+			assertSuccess();
+		});
+
 	});
 
 	function success() {

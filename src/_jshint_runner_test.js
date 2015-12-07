@@ -131,18 +131,18 @@
 			});
 
 			function assertPass(files, done) {
-				return function(pass) {
+				return function(err, pass) {
 					if (files !== undefined) files.delete();
 					assert.ok(pass);
-					done();
+					done(err);
 				};
 			}
 
 			function assertFail(files, done) {
-				return function(pass) {
+				return function(err, pass) {
 					if (files !== undefined) files.delete();
 					assert.notOk(pass);
-					done();
+					done(err);
 				};
 			}
 
