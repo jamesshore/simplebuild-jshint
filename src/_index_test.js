@@ -167,12 +167,20 @@ describe("Simplebuild module", function() {
 		});
 
 		it("supports globs", function() {
-			testFiles.writeSync("var a = 1;", "bargledy-bargle", function(filenames) {
-				jshint.checkFiles({
-					files: [ "temp_files/*" ]
-				}, success, failure);
-				assertFailure(messages.VALIDATION_FAILED);
-			});
+			var files = testFiles.write("var a = 1;", "bargledy-bargle");
+			jshint.checkFiles({
+				files: [ "temp_files/*" ]
+			}, thisSuccess, thisFailure);
+
+			function thisSuccess() {
+				files.delete();
+				assert.fail("should not succeed");
+			}
+
+			function thisFailure(message) {
+				files.delete();
+				assert.equal(message, messages.VALIDATION_FAILED);
+			}
 		});
 
 		it("passes 'options' option through to JSHint", function() {

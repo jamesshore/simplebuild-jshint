@@ -22,12 +22,21 @@
 	};
 
 	exports.validateFileList = function(fileList, options, globals, callback) {
-		try {
-			var results = fileList.map(function(filename) {
+		async.mapSeries(fileList, mapIt, reduceIt);
+
+		function mapIt(filename, mapCallback) {
+			try {
 				process.stdout.write(".");
 				var sourceCode = fs.readFileSync(filename, "utf8");
-				return exports.validateSource(sourceCode, options, globals, filename);
-			});
+				return mapCallback(null, exports.validateSource(sourceCode, options, globals, filename));
+			}
+			catch (err) {
+				return mapCallback(err);
+			}
+		}
+
+		function reduceIt(err, results) {
+			if (err) return callback(err);
 
 			var pass = results.reduce(function(pass, result) {
 				return pass && result;
@@ -35,9 +44,6 @@
 
 			process.stdout.write("\n");
 			return callback(null, pass);
-		}
-		catch (err) {
-			return callback(err);
 		}
 	};
 
