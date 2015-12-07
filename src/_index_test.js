@@ -63,19 +63,16 @@ describe("Simplebuild module", function() {
 		it("fails when no code is provided", function() {
 			jshint.checkCode({}, success, failure);
 			assertFailure();
-			//expectFailure(messages.NO_CODE_OPTION);
 		});
 
 		it("fails when option variable isn't an object", function() {
 			jshint.checkCode("foo", success, failure);
 			assertFailure();
-			//expectFailure(messages.OPTIONS_MUST_BE_OBJECT);
 		});
 
 		it("fails when option variable is null", function() {
 			jshint.checkCode(null, success, failure);
 			assertFailure();
-			//expectFailure(messages.OPTIONS_MUST_NOT_BE_NULL);
 		});
 	});
 
@@ -126,19 +123,16 @@ describe("Simplebuild module", function() {
 		it("fails when no file is provided", function() {
 			jshint.checkOneFile({}, success, failure);
 			assertFailure();
-			//expectFailure(messages.NO_FILE_OPTION);
 		});
 
 		it("fails when option variable isn't an object", function() {
 			jshint.checkOneFile("foo", success, failure);
 			assertFailure();
-			//expectFailure(messages.OPTIONS_MUST_BE_OBJECT);
 		});
 
 		it("fails when option variable is null", function() {
 			jshint.checkOneFile(null, success, failure);
 			assertFailure();
-			//expectFailure(messages.OPTIONS_MUST_NOT_BE_NULL);
 		});
 	});
 
@@ -197,19 +191,16 @@ describe("Simplebuild module", function() {
 
 		it("fails when no code is provided", function() {
 			jshint.checkFiles({}, success, failure);
-			//expectFailure(messages.NO_FILES_OPTION);
 			assertFailure();
 		});
 
 		it("fails when option variable isn't an object", function() {
 			jshint.checkFiles("foo", success, failure);
-			//expectFailure(messages.OPTIONS_MUST_BE_OBJECT);
 			assertFailure();
 		});
 
 		it("fails when option variable is null", function() {
 			jshint.checkFiles(null, success, failure);
-			//expectFailure(messages.OPTIONS_MUST_NOT_BE_NULL);
 			assertFailure();
 		});
 	});
