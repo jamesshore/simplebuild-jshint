@@ -22,18 +22,23 @@
 	};
 
 	exports.validateFileList = function(fileList, options, globals, callback) {
-		var results = fileList.map(function(filename) {
-			process.stdout.write(".");
-			var sourceCode = fs.readFileSync(filename, "utf8");
-			return exports.validateSource(sourceCode, options, globals, filename);
-		});
+		try {
+			var results = fileList.map(function(filename) {
+				process.stdout.write(".");
+				var sourceCode = fs.readFileSync(filename, "utf8");
+				return exports.validateSource(sourceCode, options, globals, filename);
+			});
 
-		var pass = results.reduce(function(pass, result) {
-			return pass && result;
-		}, true);
+			var pass = results.reduce(function(pass, result) {
+				return pass && result;
+			}, true);
 
-		process.stdout.write("\n");
-		return callback(null, pass);
+			process.stdout.write("\n");
+			return callback(null, pass);
+		}
+		catch (err) {
+			return callback(err);
+		}
 	};
 
 	//exports.validateFileList = function(fileList, options, globals, callback) {

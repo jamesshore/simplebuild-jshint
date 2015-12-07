@@ -105,6 +105,14 @@
 				runner.validateFileList(files.filenames, {}, {}, assertFail(files, done));
 			});
 
+			it("returns error when file doesn't exist (or other exception occurs)", function(done) {
+				runner.validateFileList([ "no-such-file.js" ], {}, {}, function(err) {
+					assert.isDefined(err);
+					assert.equal(err.message, "ENOENT: no such file or directory, open 'no-such-file.js'");
+					done();
+				});
+			});
+
 			it("reports one dot per file", function(done) {
 				var inspect = stdout.inspect();
 				var files = testFiles.write("var a=1;", "var b=1;", "var c=1;");
