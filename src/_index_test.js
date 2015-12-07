@@ -148,82 +148,60 @@ describe("Simplebuild module", function() {
 		//	expect(jshint.checkFiles.descriptors).to.eql(messages.FILE_LIST_VALIDATOR_DESCRIPTORS);
 		//});
 
-		it("calls success() callback on success", function() {
-			testFiles.writeSync("var a = 1;", function(filenames) {
-				jshint.checkFiles({
-					files: filenames
-				}, success, failure);
-				assertSuccess();
-			});
+		it("calls success() callback on success", function(done) {
+			var files = testFiles.write("var a = 1;");
+			jshint.checkFiles({
+				files: files.filenames
+			}, expectSuccess(done, files), expectNoFailure(done, files));
 		});
 
-		it("calls failure() callback on failure", function() {
-			testFiles.writeSync("bargledy-bargle", function(filenames) {
-				jshint.checkFiles({
-					files: filenames
-				}, success, failure);
-			});
-			assertFailure(messages.VALIDATION_FAILED);
+		it("calls failure() callback on failure", function(done) {
+			var files = testFiles.write("bargledy-bargle");
+			jshint.checkFiles({
+				files: files.filenames
+			}, expectNoSuccess(done, files), expectFailure(done, files, messages.VALIDATION_FAILED));
 		});
 
-		it("supports globs", function() {
+		it("supports globs", function(done) {
 			var files = testFiles.write("var a = 1;", "bargledy-bargle");
 			jshint.checkFiles({
 				files: [ "temp_files/*" ]
-			}, thisSuccess, thisFailure);
-
-			function thisSuccess() {
-				files.delete();
-				assert.fail("should not succeed");
-			}
-
-			function thisFailure(message) {
-				files.delete();
-				assert.equal(message, messages.VALIDATION_FAILED);
-			}
+			}, expectNoSuccess(done, files), expectFailure(done, files, messages.VALIDATION_FAILED));
 		});
 
-		it("passes 'options' option through to JSHint", function() {
-			testFiles.writeSync("a = 1;", function(filenames) {
-				jshint.checkFiles({
-					files: filenames,
-					options: { undef: true },
-				}, success, failure);
-				assertFailure(messages.VALIDATION_FAILED);
-			});
+		it("passes 'options' option through to JSHint", function(done) {
+			var files = testFiles.write("a = 1;");
+			jshint.checkFiles({
+				files: files.filenames,
+				options: { undef: true }
+			}, expectNoSuccess(done, files), expectFailure(done, files, messages.VALIDATION_FAILED));
 		});
 
-		it("passes 'global' option through to JSHint", function() {
-			testFiles.writeSync("a = 1;", function(filenames) {
-				jshint.checkFiles({
-					files: filenames,
-					options: { undef: true },
-					globals: { a: true }
-				}, success, failure);
-				assertSuccess();
-			});
+		it("passes 'global' option through to JSHint", function(done) {
+			var files = testFiles.write("a = 1;");
+			jshint.checkFiles({
+				files: files.filenames,
+				options: { undef: true },
+				globals: { a: true }
+			}, expectSuccess(done, files), expectNoFailure(done, files));
 		});
 
-		it("fails when no code is provided", function() {
-			jshint.checkFiles({}, success, failure);
-			assertFailure();
+		it("fails when no code is provided", function(done) {
+			jshint.checkFiles({}, expectNoSuccess(done), expectFailure(done));
 		});
 
-		it("fails when option variable isn't an object", function() {
-			jshint.checkFiles("foo", success, failure);
-			assertFailure();
+		it("fails when option variable isn't an object", function(done) {
+			jshint.checkFiles("foo", expectNoSuccess(done), expectFailure(done));
 		});
 
-		it("fails when option variable is null", function() {
-			jshint.checkFiles(null, success, failure);
-			assertFailure();
+		it("fails when option variable is null", function(done) {
+			jshint.checkFiles(null, expectNoSuccess(done), expectFailure(done));
 		});
 
-		it("skips files that don't exist", function() {
+		it("skips files that don't exist", function(done) {
 			jshint.checkFiles({
 				files: "no-such-file.js"
-			}, success, failure);
-			assertSuccess();
+			}, expectSuccess(done), expectNoFailure(done));
 		});
 
 	});
@@ -250,6 +228,37 @@ describe("Simplebuild module", function() {
 		if (failureArgs === null) throw new Error("Expected failure callback to be called");
 		if (successArgs !== null) throw new Error("Did not expect success callback to be called");
 		if (failureMessage !== undefined) assert.deepEqual(failureArgs, [ failureMessage ]);
+	}
+
+	function expectSuccess(done, files) {
+		return function() {
+			if (files) files.delete();
+			done();
+		};
+	}
+
+	function expectNoSuccess(done, files) {
+		return function() {
+			if (files) files.delete();
+			assert.fail("should not succeed");
+			done();
+		};
+	}
+
+	function expectFailure(done, files, expectedMessage) {
+		return function(actualMessage) {
+			if (files) files.delete();
+			if (expectedMessage) assert.equal(actualMessage, expectedMessage);
+			done();
+		};
+	}
+
+	function expectNoFailure(done, files) {
+		return function() {
+			if (files) files.delete();
+			assert.fail("should not fail");
+			done();
+		};
 	}
 
 });
