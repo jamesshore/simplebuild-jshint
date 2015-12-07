@@ -139,9 +139,11 @@ This library is a simplebuild module. In addition to being used as a standalone 
 
 ## Version History
 
-__1.1.0:__ Better error messages when `options` parameter is incorrect  
+__1.2.0:__ `checkFiles()` reads files asynchronously and in parallel, which makes it a bit faster.
 
-__1.0.1:__ Fix: doesn't try to report non-existent error codes (they're not present in old versions of JSHint)
+__1.1.0:__ Better error messages when `options` parameter is incorrect.  
+
+__1.0.1:__ Fix: doesn't try to report non-existent error codes (they're not present in old versions of JSHint).
 
 __1.0.0:__ Reports warning codes (and error codes) so they can be disabled more easily.
 
