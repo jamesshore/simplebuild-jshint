@@ -10,6 +10,8 @@
 	var async = require("async");
 	var errorTranslator = require("./error_translator.js");
 
+	var MAX_PARALLEL_FILE_READS = 25;
+
 	exports.validateSource = function(sourceCode, options, globals, name) {
 		var pass = jshint(sourceCode, options, globals);
 		if (!pass) reportErrors(name);
@@ -22,7 +24,7 @@
 	};
 
 	exports.validateFileList = function(fileList, options, globals, callback) {
-		async.mapSeries(fileList, mapIt, reduceIt);
+		async.mapLimit(fileList, MAX_PARALLEL_FILE_READS, mapIt, reduceIt);
 
 		function mapIt(filename, mapCallback) {
 			process.stdout.write(".");

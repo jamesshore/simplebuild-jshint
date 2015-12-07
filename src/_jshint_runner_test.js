@@ -124,16 +124,13 @@
 				});
 			});
 
-			it("validates later files even if early file fails", function(done) {
+			it("validates all files even if one file fails", function(done) {
 				var inspect = stdout.inspect();
 				var files = testFiles.write("YARR=1", "var b=1;", "var c=1;");
 				runner.validateFileList(files.filenames, {}, {}, function() {
 					inspect.restore();
 					files.delete();
-					assert.equal(inspect.output[0], ".");
-					assert.equal(inspect.output[1], "\n" + files.filenames[0] + " failed\n");
-					assert.equal(inspect.output[4], ".");
-					assert.equal(inspect.output[5], ".");
+					assert.include(inspect.output, "\n" + files.filenames[0] + " failed\n");
 					done();
 				});
 			});
