@@ -88,6 +88,4 @@ describe("Error translation", function() {
 		]), []);
 	});
 
-
-
 });
