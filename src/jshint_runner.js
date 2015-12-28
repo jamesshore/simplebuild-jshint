@@ -13,24 +13,18 @@
 	var MAX_PARALLEL_FILE_READS = 25;
 
 	exports.validateSource = function(sourceCode, options, globals, name, callback) {
-		var result;
 		var parameters = {
 			sourceCode: sourceCode,
 			options: options,
 			globals: globals
 		};
 
-		// jshintWrapper is actually synchronous, which lets us get away with some shenanigans.
-		// We need to make it work asynchronously before we can implement forking, but that
-		// requires us to make validateSource work asynchronously first.
-		jshintWrapper(parameters, function(err, callbackResult) {
+		jshintWrapper(parameters, function(err, result) {
 			if (err) return callback(err);
 
-			result = callbackResult;
+			if (!result.pass) reportErrors(result.errors, name);
+			return callback(null, result.pass);
 		});
-		if (!result.pass) reportErrors(result.errors, name);
-		if (callback) callback(null, result.pass);
-		return result.pass;
 	};
 
 	exports.validateFile = function(filename, options, globals, callback) {
@@ -44,12 +38,12 @@
 	exports.validateFileList = function(fileList, options, globals, callback) {
 		async.mapLimit(fileList, MAX_PARALLEL_FILE_READS, mapIt, reduceIt);
 
-		function mapIt(filename, mapCallback) {
+		function mapIt(filename, mapItCallback) {
 			fs.readFile(filename, "utf8", function(err, sourceCode) {
-				if (err) return mapCallback(err);
+				if (err) return mapItCallback(err);
 
 				process.stdout.write(".");
-				return mapCallback(null, exports.validateSource(sourceCode, options, globals, filename));
+				exports.validateSource(sourceCode, options, globals, filename, mapItCallback);
 			});
 		}
 

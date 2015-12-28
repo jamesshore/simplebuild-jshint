@@ -29,54 +29,50 @@ describe("Simplebuild module", function() {
 		//	expect(jshint.checkCode.descriptors).to.eql(messages.SOURCE_VALIDATOR_DESCRIPTORS);
 		//});
 
-		it("calls success() callback on success", function() {
+		it("calls success() callback on success", function(done) {
 			jshint.checkCode({
 				code: "var a = 1;"
-			}, success, failure);
-			assertSuccess();
+			}, expectSuccess(done), expectNoFailure(done));
 		});
 
-		it("calls failure() callback on failure", function() {
+		it("calls failure() callback on failure", function(done) {
 			jshint.checkCode({
 				code: "bargledy-bargle"
-			}, success, failure);
-			assertFailure(messages.VALIDATION_FAILED);
+			}, expectNoSuccess(done), expectFailure(done, undefined, messages.VALIDATION_FAILED));
 		});
 
-		it("passes 'options' option through to JSHint", function() {
+		it("passes 'options' option through to JSHint", function(done) {
 			jshint.checkCode({
 				code: "a = 1;",
 				options: { undef: true },
-			}, success, failure);
-			assertFailure(messages.VALIDATION_FAILED);
+			}, expectNoSuccess(done), expectFailure(done, undefined, messages.VALIDATION_FAILED));
 		});
 
-		it("passes 'global' option through to JSHint", function() {
+		it("passes 'global' option through to JSHint", function(done) {
 			jshint.checkCode({
 				code: "a = 1;",
 				options: { undef: true },
 				globals: { a: true }
-			}, success, failure);
-			assertSuccess();
+			}, expectSuccess(done), expectNoFailure(done));
 		});
 
-		it("fails when no code is provided", function() {
-			jshint.checkCode({}, success, failure);
-			assertFailure();
+		it("fails when no code is provided", function(done) {
+			jshint.checkCode({}, expectNoSuccess(done), expectFailure(done));
 		});
 
-		it("fails when option variable isn't an object", function() {
-			jshint.checkCode("foo", success, failure);
-			assertFailure();
+		it("fails when option variable isn't an object", function(done) {
+			jshint.checkCode("foo", expectNoSuccess(done), expectFailure(done));
 		});
 
-		it("fails when option variable is null", function() {
-			jshint.checkCode(null, success, failure);
-			assertFailure();
+		it("fails when option variable is null", function(done) {
+			jshint.checkCode(null, expectNoSuccess(done), expectFailure(done));
 		});
+
 	});
 
+
 	describe("single file validator", function() {
+
 		//it("has descriptors", function() {
 		//	expect(jshint.checkOneFile.descriptors).to.eql(messages.ONE_FILE_VALIDATOR_DESCRIPTORS);
 		//});
@@ -130,9 +126,12 @@ describe("Simplebuild module", function() {
 				file: "no-such-file.js"
 			}, expectNoSuccess(done), expectFailure(done, undefined, expectedMessage));
 		});
+
 	});
 
+
 	describe("file list validator", function() {
+
 		//it("has descriptors", function() {
 		//	expect(jshint.checkFiles.descriptors).to.eql(messages.FILE_LIST_VALIDATOR_DESCRIPTORS);
 		//});

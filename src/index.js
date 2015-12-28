@@ -54,7 +54,6 @@
 				if (passed) succeed();
 				else fail(messages.VALIDATION_FAILED);
 			});
-
 		}
 		catch(err) {
 			return fail(err.message);
@@ -71,10 +70,12 @@
 			};
 			var options = simplebuild.normalizeOptions(userOptions, DEFAULT_OPTIONS, types);
 
-			var passed = jshint.validateSource(options.code, options.options, options.globals);
+			jshint.validateSource(options.code, options.options, options.globals, undefined, function(err, passed) {
+				if (err) return fail(err.message);
 
-			if (passed) succeed();
-			else fail(messages.VALIDATION_FAILED);
+				if (passed) succeed();
+				else fail(messages.VALIDATION_FAILED);
+			});
 		}
 		catch(err) {
 			return fail(err.message);
