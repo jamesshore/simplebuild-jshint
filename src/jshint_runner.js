@@ -34,10 +34,11 @@
 	};
 
 	exports.validateFile = function(filename, options, globals, callback) {
-		var sourceCode = fs.readFileSync(filename, "utf8");
-		var pass = exports.validateSource(sourceCode, options, globals, filename);
-		if (callback) callback(null, pass);
-		return pass;
+		fs.readFile(filename, "utf8", function(err, sourceCode) {
+			if (err) return callback(err);
+
+			exports.validateSource(sourceCode, options, globals, filename, callback);
+		});
 	};
 
 	exports.validateFileList = function(fileList, options, globals, callback) {
@@ -45,8 +46,9 @@
 
 		function mapIt(filename, mapCallback) {
 			fs.readFile(filename, "utf8", function(err, sourceCode) {
-				process.stdout.write(".");
 				if (err) return mapCallback(err);
+
+				process.stdout.write(".");
 				return mapCallback(null, exports.validateSource(sourceCode, options, globals, filename));
 			});
 		}

@@ -48,10 +48,13 @@
 			};
 			var options = simplebuild.normalizeOptions(userOptions, DEFAULT_OPTIONS, types);
 
-			var passed = jshint.validateFile(options.file, options.options, options.globals);
+			jshint.validateFile(options.file, options.options, options.globals, function(err, passed) {
+				if (err) return fail(err.message);
 
-			if (passed) succeed();
-			else fail(messages.VALIDATION_FAILED);
+				if (passed) succeed();
+				else fail(messages.VALIDATION_FAILED);
+			});
+
 		}
 		catch(err) {
 			return fail(err.message);

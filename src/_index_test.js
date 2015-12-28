@@ -81,65 +81,54 @@ describe("Simplebuild module", function() {
 		//	expect(jshint.checkOneFile.descriptors).to.eql(messages.ONE_FILE_VALIDATOR_DESCRIPTORS);
 		//});
 
-		it("calls success() callback on success", function() {
-			testFiles.writeSync("var a = 1;", function(filenames) {
-				jshint.checkOneFile({
-					file: filenames[0]
-				}, success, failure);
-				assertSuccess();
-			});
+		it("calls success() callback on success", function(done) {
+			var files = testFiles.write("var a = 1;");
+			jshint.checkOneFile({
+				file: files.filenames[0]
+			}, expectSuccess(done, files), expectNoFailure(done, files));
 		});
 
-		it("calls failure() callback on failure", function() {
-			testFiles.writeSync("why must you torment me so?", function(filenames) {
-				jshint.checkOneFile({
-					file: filenames[0]
-				}, success, failure);
-			});
-			assertFailure(messages.VALIDATION_FAILED);
+		it("calls failure() callback on failure", function(done) {
+			var files = testFiles.write("nonsense-to-force-a-failure");
+			jshint.checkOneFile({
+				file: files.filenames[0]
+			}, expectNoSuccess(done, files), expectFailure(done, files, messages.VALIDATION_FAILED));
 		});
 
-		it("passes 'options' option through to JSHint", function() {
-			testFiles.writeSync("a = 1;", function(filenames) {
-				jshint.checkOneFile({
-					file: filenames[0],
-					options: { undef: true },
-				}, success, failure);
-				assertFailure(messages.VALIDATION_FAILED);
-			});
+		it("passes 'options' option through to JSHint", function(done) {
+			var files = testFiles.write("a = 1;");
+			jshint.checkOneFile({
+				file: files.filenames[0],
+				options: { undef: true }
+			}, expectNoSuccess(done, files), expectFailure(done, files, messages.VALIDATION_FAILED));
 		});
 
-		it("passes 'global' option through to JSHint", function() {
-			testFiles.writeSync("a = 1;", function(filenames) {
-				jshint.checkOneFile({
-					file: filenames[0],
-					options: { undef: true },
-					globals: { a: true }
-				}, success, failure);
-				assertSuccess();
-			});
+		it("passes 'globals' option through to JSHint", function(done) {
+			var files = testFiles.write("a = 1;");
+			jshint.checkOneFile({
+				file: files.filenames[0],
+				options: { undef: true },
+				globals: { a: true }
+			}, expectSuccess(done, files), expectNoFailure(done, files));
 		});
 
-		it("fails when no file is provided", function() {
-			jshint.checkOneFile({}, success, failure);
-			assertFailure();
+		it("fails when no file is provided", function(done) {
+			jshint.checkOneFile({}, expectNoSuccess(done), expectFailure(done));
 		});
 
-		it("fails when option variable isn't an object", function() {
-			jshint.checkOneFile("foo", success, failure);
-			assertFailure();
+		it("fails when option variable isn't an object", function(done) {
+			jshint.checkOneFile("foo", expectNoSuccess(done), expectFailure(done));
 		});
 
-		it("fails when option variable is null", function() {
-			jshint.checkOneFile(null, success, failure);
-			assertFailure();
+		it("fails when option variable is null", function(done) {
+			jshint.checkOneFile(null, expectNoSuccess(done), expectFailure(done));
 		});
 
-		it("fails when file doesn't exist", function() {
+		it("fails when file doesn't exist", function(done) {
+			var expectedMessage = "ENOENT: no such file or directory, open 'no-such-file.js'";
 			jshint.checkOneFile({
 				file: "no-such-file.js"
-			}, success, failure);
-			assertFailure("ENOENT: no such file or directory, open 'no-such-file.js'");
+			}, expectNoSuccess(done), expectFailure(done, undefined, expectedMessage));
 		});
 	});
 
