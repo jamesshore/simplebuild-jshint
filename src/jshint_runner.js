@@ -10,21 +10,11 @@
 	var async = require("async");
 	var errorTranslator = require("./error_translator.js");
 
+	var NO_WORKERS = null;
 	var MAX_PARALLEL_FILE_READS = 25;
 
 	exports.validateSource = function(sourceCode, options, globals, name, callback) {
-		var parameters = {
-			sourceCode: sourceCode,
-			options: options,
-			globals: globals
-		};
-
-		jshintWrapper(parameters, function(err, result) {
-			if (err) return callback(err);
-
-			if (!result.pass) reportErrors(result.errors, name);
-			return callback(null, result.pass);
-		});
+		runJsHint(NO_WORKERS, sourceCode, options, globals, name, callback);
 	};
 
 	exports.validateFile = function(filename, options, globals, callback) {
@@ -43,7 +33,7 @@
 				if (err) return mapItCallback(err);
 
 				process.stdout.write(".");
-				exports.validateSource(sourceCode, options, globals, filename, mapItCallback);
+				runJsHint(NO_WORKERS, sourceCode, options, globals, filename, mapItCallback);
 			});
 		}
 
@@ -65,6 +55,24 @@
 		errorTranslator.translate(errors).forEach(function(errorLine) {
 			console.log(errorLine);
 		});
+	}
+
+	function runJsHint(workers, sourceCode, options, globals, name, callback) {
+		var parameters = {
+			sourceCode: sourceCode,
+			options: options,
+			globals: globals
+		};
+
+		if (workers) workers(parameters, processResult);
+		else jshintWrapper(parameters, processResult);
+
+		function processResult(err, result) {
+			if (err) return callback(err);
+
+			if (!result.pass) reportErrors(result.errors, name);
+			return callback(null, result.pass);
+		}
 	}
 
 })();
