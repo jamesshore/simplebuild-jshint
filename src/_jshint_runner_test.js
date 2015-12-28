@@ -39,72 +39,75 @@
 
 			it("says nothing on pass", function(done) {
 				var inspect = stdout.inspect();
-				runner.validateSource("", {}, {}, undefined, function() {
+				runner.validateSource("", {}, {}, undefined, function(err) {
 					inspect.restore();
 					assert.deepEqual(inspect.output, []);
-					done();
+					done(err);
 				});
 			});
 
 			it("reports errors on failure", function(done) {
 				var inspect = stdout.inspect();
-				runner.validateSource("foo;", {}, {}, undefined, function() {
+				runner.validateSource("foo;", {}, {}, undefined, function(err) {
 					inspect.restore();
 					assert.deepEqual(inspect.output, [
 						"\nfailed\n",
 						"1: foo;\n",
 						"   Expected an assignment or function call and instead saw an expression. (W030)\n",
 					]);
-					done();
+					done(err);
 				});
 			});
 
 			it("includes optional description on failure", function(done) {
 				var inspect = stdout.inspect();
-				runner.validateSource("foo;", {}, {}, "(description)", function() {
+				runner.validateSource("foo;", {}, {}, "(description)", function(err) {
 					inspect.restore();
 					assert.deepEqual(inspect.output[0], "\n(description) failed\n");
-					done();
+					done(err);
 				});
 			});
 		});
 
 		describe("File validation", function() {
-			it("respects options", function() {
-				testFiles.writeSync("var a=1", function(filenames) {
-					assert.ok(runner.validateFile(filenames[0], { asi: true }));
+
+			it("respects options", function(done) {
+				var files = testFiles.write("var a=1");
+				runner.validateFile(files.filenames[0], { asi: true }, undefined, assertPass(done, files));
+			});
+
+			it("respects globals", function(done) {
+				var files = testFiles.write("a = 1;");
+				runner.validateFile(files.filenames[0], { undef: true }, { a: true }, assertPass(done, files));
+			});
+
+			it("fails when file is invalid", function(done) {
+				var files = testFiles.write("YARR");
+				runner.validateFile(files.filenames[0], {}, {}, assertFail(done, files));
+			});
+
+			it("reports nothing on success", function(done) {
+				var inspect = stdout.inspect();
+				var files = testFiles.write("var a=1;");
+				runner.validateFile(files.filenames[0], {}, {}, function(err) {
+					inspect.restore();
+					files.delete();
+					assert.deepEqual(inspect.output, []);
+					done(err);
 				});
 			});
 
-			it("respects globals", function() {
-				testFiles.writeSync("a = 1;", function(filenames) {
-					assert.ok(runner.validateFile(filenames[0], { undef: true }, { a: true }));
+			it("reports filename on failure (as well as normal error messages)", function(done) {
+				var inspect = stdout.inspect();
+				var files = testFiles.write("foo;");
+				runner.validateFile(files.filenames[0], {}, {}, function(err) {
+					inspect.restore();
+					files.delete();
+					assert.equal(inspect.output[0], "\n" + files.filenames[0] + " failed\n");
+					done(err);
 				});
 			});
 
-			it("fails when file is invalid", function() {
-				testFiles.writeSync("YARR", function(filenames) {
-					assert.notOk(runner.validateFile(filenames[0]));
-				});
-			});
-
-			it("reports nothing on success", function() {
-				stdout.inspectSync(function(output) {
-					testFiles.writeSync("var a=1;", function(filenames) {
-						runner.validateFile(filenames[0]);
-						assert.deepEqual(output, []);
-					});
-				});
-			});
-
-			it("reports filename on failure (as well as normal error messages)", function() {
-				stdout.inspectSync(function(output) {
-					testFiles.writeSync("foo;", function(filenames) {
-						runner.validateFile(filenames[0]);
-						assert.equal(output[0], "\n" + filenames[0] + " failed\n");
-					});
-				});
-			});
 		});
 
 

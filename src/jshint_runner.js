@@ -33,9 +33,11 @@
 		return result.pass;
 	};
 
-	exports.validateFile = function(filename, options, globals) {
+	exports.validateFile = function(filename, options, globals, callback) {
 		var sourceCode = fs.readFileSync(filename, "utf8");
-		return exports.validateSource(sourceCode, options, globals, filename);
+		var pass = exports.validateSource(sourceCode, options, globals, filename);
+		if (callback) callback(null, pass);
+		return pass;
 	};
 
 	exports.validateFileList = function(fileList, options, globals, callback) {
