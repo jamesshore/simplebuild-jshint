@@ -14,7 +14,9 @@
 
 	exports.validateSource = function(sourceCode, options, globals, name) {
 		var pass = jshint(sourceCode, options, globals);
-		if (!pass) reportErrors(name);
+
+		// The errors from the last run are stored globally on the jshint object. Yeah.
+		if (!pass) reportErrors(jshint.errors, name);
 		return pass;
 	};
 
@@ -46,11 +48,10 @@
 		}
 	};
 
-	function reportErrors(name) {
-		// The errors from the last run are stored globally on the jshint object. Yeah.
+	function reportErrors(errors, name) {
 		name = name ? name + " " : "";
 		console.log("\n" + name + "failed");
-		errorTranslator.translate(jshint.errors).forEach(function(errorLine) {
+		errorTranslator.translate(errors).forEach(function(errorLine) {
 			console.log(errorLine);
 		});
 	}
