@@ -20,7 +20,7 @@
 		});
 
 		describe("Source code validation", function() {
-			
+
 			it("passes good source code", function(done) {
 				runner.validateSource("var a = 1;", undefined, undefined, undefined, assertPass(done));
 			});
@@ -37,28 +37,34 @@
 				runner.validateSource("a = 1;", { undef: true }, { a: true }, undefined, assertPass(done));
 			});
 
-			it("says nothing on pass", function() {
-				stdout.inspectSync(function(output) {
-					runner.validateSource("");
-					assert.deepEqual(output, []);
+			it("says nothing on pass", function(done) {
+				var inspect = stdout.inspect();
+				runner.validateSource("", {}, {}, undefined, function() {
+					inspect.restore();
+					assert.deepEqual(inspect.output, []);
+					done();
 				});
 			});
 
-			it("includes optional description", function() {
-				stdout.inspectSync(function(output) {
-					runner.validateSource("foo;", {}, {}, "(description)");
-					assert.equal(output[0], "\n(description) failed\n");
-				});
-			});
-
-			it("reports errors on failure", function() {
-				stdout.inspectSync(function(output) {
-					runner.validateSource("foo;");
-					assert.deepEqual(output, [
+			it("reports errors on failure", function(done) {
+				var inspect = stdout.inspect();
+				runner.validateSource("foo;", {}, {}, undefined, function() {
+					inspect.restore();
+					assert.deepEqual(inspect.output, [
 						"\nfailed\n",
 						"1: foo;\n",
 						"   Expected an assignment or function call and instead saw an expression. (W030)\n",
 					]);
+					done();
+				});
+			});
+
+			it("includes optional description on failure", function(done) {
+				var inspect = stdout.inspect();
+				runner.validateSource("foo;", {}, {}, "(description)", function() {
+					inspect.restore();
+					assert.deepEqual(inspect.output[0], "\n(description) failed\n");
+					done();
 				});
 			});
 		});
