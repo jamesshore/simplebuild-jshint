@@ -12,7 +12,7 @@
 
 	var MAX_PARALLEL_FILE_READS = 25;
 
-	exports.validateSource = function(sourceCode, options, globals, name) {
+	exports.validateSource = function(sourceCode, options, globals, name, callback) {
 		var result;
 		var parameters = {
 			sourceCode: sourceCode,
@@ -24,9 +24,12 @@
 		// We need to make it work asynchronously before we can implement forking, but that
 		// requires us to make validateSource work asynchronously first.
 		jshintWrapper(parameters, function(err, callbackResult) {
+			if (err) return callback(err);
+
 			result = callbackResult;
 		});
 		if (!result.pass) reportErrors(result.errors, name);
+		if (callback) callback(null, result.pass);
 		return result.pass;
 	};
 
