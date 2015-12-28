@@ -1,8 +1,10 @@
 # Simplebuild-JSHint
 
-A simple library for automating JSHint.
+A simple library for automating JSHint. Now with multi-core capability.
 
 [JSHint](http://www.jshint.com/) is a static analysis ("lint") tool for JavaScript. It analyzes JavaScript source code for common mistakes. This library provides a simple interface to JSHint that's convenient to use with task automation tools such as [Grunt](http://gruntjs.com/) or [Jake](https://github.com/mde/jake).
+
+When you're linting a lot of files, this library will run JSHint across multiple cores. JSHint is CPU-bound, so this can result in a big speed boost. It only happens when you have a lot of files to lint (35 or more at the time of this writing) because spawning worker processes is slow.
 
 
 ## Installation
@@ -24,7 +26,7 @@ This library provides these functions:
 
 ### `checkFiles(options, success, failure)`
 
-Run JSHint against a list of files. A dot will be written to stdout for each file processed. Any errors will be written to stdout.
+Run JSHint against a list of files. A dot will be written to stdout for each file processed. Any errors will be written to stdout. When there are a large number of files to process, additional worker processes will be spawned to take advantage of additional CPU cores.
 
 * `options`: an object containing the following properties:
     * `files`: a string or array containing the files to check. Globs (`*`) and globstars (`**`) will be expanded to match files and directory trees respectively. Prepend `!` to exclude files.
@@ -139,6 +141,8 @@ This library is a simplebuild module. In addition to being used as a standalone 
 
 ## Version History
 
+__1.3.0:__ `checkFiles()` uses multiple cores when a lot of files need linting. This can result in a big speed boost.
+
 __1.2.0:__ `checkFiles()` reads files asynchronously and in parallel, which makes it a bit faster.
 
 __1.1.0:__ Better error messages when `options` parameter is incorrect.  
@@ -166,9 +170,10 @@ Created by James Shore.
 
 1. Update version history in readme and check in
 2. Ensure clean build: `./jake.sh`
-3. Update npm version: `npm version [major|minor|patch]`
-4. Release to npm: `npm publish`
-5. Release to github: `git push && git push --tags`
+3. Remove temporary branches: `git branch`, `git branch -d [branch]`
+4. Update npm version: `npm version [major|minor|patch]`
+5. Release to npm: `npm publish`
+6. Release to github: `git push && git push --tags`
 
 
 ## License
