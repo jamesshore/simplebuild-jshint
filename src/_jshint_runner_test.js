@@ -20,25 +20,46 @@
 		});
 
 		describe("Source code validation", function() {
-			it("passes good source code", function() {
-				assert.ok(runner.validateSource("var a = 1;"));
+			
+			it("passes good source code", function(done) {
+				runner.validateSource("var a = 1;", undefined, undefined, undefined, assertPass(done));
 			});
 
-			it("fails bad source code", function() {
-				assert.notOk(runner.validateSource("bargledy-bargle"));
+			it("fails bad source code", function(done) {
+				runner.validateSource("bargledy-bargle", undefined, undefined, undefined, assertFail(done));
 			});
 
-			it("respects options", function() {
-				assert.ok(runner.validateSource("a = 1", { asi: true }));
+			it("respects options", function(done) {
+				runner.validateSource("a = 1", { asi: true }, undefined, undefined, assertPass(done));
 			});
 
-			it("respects globals", function() {
-				assert.ok(runner.validateSource("a = 1;", { undef: true }, { a: true }));
+			it("respects globals", function(done) {
+				runner.validateSource("a = 1;", { undef: true }, { a: true }, undefined, assertPass(done));
 			});
 
-			it("DOES NOT support 'globals' option in place of globals parameter", function() {
-				var globals = { a: true };
-				assert.notOk(runner.validateSource("a = 1;", { undef: true, globals: globals }, {}));
+			it("says nothing on pass", function() {
+				stdout.inspectSync(function(output) {
+					runner.validateSource("");
+					assert.deepEqual(output, []);
+				});
+			});
+
+			it("includes optional description", function() {
+				stdout.inspectSync(function(output) {
+					runner.validateSource("foo;", {}, {}, "(description)");
+					assert.equal(output[0], "\n(description) failed\n");
+				});
+			});
+
+			it("reports errors on failure", function() {
+				stdout.inspectSync(function(output) {
+					runner.validateSource("foo;");
+					assert.deepEqual(output, [
+						"\nfailed\n",
+						"1: foo;\n",
+						"   Expected an assignment or function call and instead saw an expression. (W030)\n",
+					]);
+				});
 			});
 		});
 
@@ -87,22 +108,22 @@
 
 			it("respects options", function(done) {
 				var files = testFiles.write("var a=1");
-				runner.validateFileList(files.filenames, { asi: true }, {}, assertPass(files, done));
+				runner.validateFileList(files.filenames, { asi: true }, {}, assertPass(done, files));
 			});
 
 			it("respects globals", function(done) {
 				var files = testFiles.write("a = 1;");
-				runner.validateFileList(files.filenames, { undef: true }, { a: true }, assertPass(files, done));
+				runner.validateFileList(files.filenames, { undef: true }, { a: true }, assertPass(done, files));
 			});
 
 			it("passes when all files are valid", function(done) {
 				var files = testFiles.write("var a=1;", "var b=1;", "var c=1;");
-				runner.validateFileList(files.filenames, {}, {}, assertPass(files, done));
+				runner.validateFileList(files.filenames, {}, {}, assertPass(done, files));
 			});
 
 			it("fails when any file is invalid", function(done) {
 				var files = testFiles.write("var a=1;", "var b=1;", "YARR", "var d=1;");
-				runner.validateFileList(files.filenames, {}, {}, assertFail(files, done));
+				runner.validateFileList(files.filenames, {}, {}, assertFail(done, files));
 			});
 
 			it("returns error when file doesn't exist (or other exception occurs)", function(done) {
@@ -135,51 +156,23 @@
 				});
 			});
 
-			function assertPass(files, done) {
-				return function(err, pass) {
-					if (files !== undefined) files.delete();
-					assert.ok(pass);
-					done(err);
-				};
-			}
-
-			function assertFail(files, done) {
-				return function(err, pass) {
-					if (files !== undefined) files.delete();
-					assert.notOk(pass);
-					done(err);
-				};
-			}
-
-		});
-
-		describe("Error reporting", function() {
-			it("says nothing on pass", function() {
-				stdout.inspectSync(function(output) {
-					runner.validateSource("");
-					assert.deepEqual(output, []);
-				});
-			});
-
-			it("includes optional description", function() {
-				stdout.inspectSync(function(output) {
-					runner.validateSource("foo;", {}, {}, "(description)");
-					assert.equal(output[0], "\n(description) failed\n");
-				});
-			});
-
-			it("reports errors on failure", function() {
-				stdout.inspectSync(function(output) {
-					runner.validateSource("foo;");
-					assert.deepEqual(output, [
-						"\nfailed\n",
-						"1: foo;\n",
-						"   Expected an assignment or function call and instead saw an expression. (W030)\n",
-					]);
-				});
-			});
-
 		});
 	});
+
+	function assertPass(done, files) {
+		return function(err, pass) {
+			if (files !== undefined) files.delete();
+			assert.isTrue(pass, "should have passed");
+			done(err);
+		};
+	}
+
+	function assertFail(done, files) {
+		return function(err, pass) {
+			if (files !== undefined) files.delete();
+			assert.isFalse(pass, "should have failed");
+			done(err);
+		};
+	}
 
 })();
