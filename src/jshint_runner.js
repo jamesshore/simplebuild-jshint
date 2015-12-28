@@ -20,7 +20,7 @@
 			globals: globals
 		};
 
-		// jshintWrapper actually synchronous, which lets us get away with some shenanigans.
+		// jshintWrapper is actually synchronous, which lets us get away with some shenanigans.
 		// We need to make it work asynchronously before we can implement forking, but that
 		// requires us to make validateSource work asynchronously first.
 		jshintWrapper(parameters, function(err, callbackResult) {
