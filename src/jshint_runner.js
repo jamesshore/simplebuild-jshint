@@ -1,11 +1,11 @@
 // Copyright (c) 2012-2015 Titanium I.T. LLC. All rights reserved. For license, see "README" or "LICENSE" file.
 
-/* Run JSHint */
+/* Run JSHint and print output to console */
 
 (function() {
 	"use strict";
 
-	var jshint = require("jshint").JSHINT;
+	var jshintWrapper = require("./forkable_jshint_wrapper");
 	var fs = require("fs");
 	var async = require("async");
 	var errorTranslator = require("./error_translator.js");
@@ -13,11 +13,21 @@
 	var MAX_PARALLEL_FILE_READS = 25;
 
 	exports.validateSource = function(sourceCode, options, globals, name) {
-		var pass = jshint(sourceCode, options, globals);
+		var result;
+		var parameters = {
+			sourceCode: sourceCode,
+			options: options,
+			globals: globals
+		};
 
-		// The errors from the last run are stored globally on the jshint object. Yeah.
-		if (!pass) reportErrors(jshint.errors, name);
-		return pass;
+		// jshintWrapper actually synchronous, which lets us get away with some shenanigans.
+		// We need to make it work asynchronously before we can implement forking, but that
+		// requires us to make validateSource work asynchronously first.
+		jshintWrapper(parameters, function(err, callbackResult) {
+			result = callbackResult;
+		});
+		if (!result.pass) reportErrors(result.errors, name);
+		return result.pass;
 	};
 
 	exports.validateFile = function(filename, options, globals) {
