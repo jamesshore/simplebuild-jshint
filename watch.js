@@ -14,7 +14,8 @@
 
 	var WATCH = [
 		"build/**/*.js",
-		"src/**/*.js"
+		"src/**/*.js",
+		"./Jakefile.js"
 	];
 
 	var COMMAND = "./jake.sh";
