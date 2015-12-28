@@ -14,10 +14,13 @@
 
 	var NUM_CPUS = os.cpus().length;
 	var MAX_PARALLEL_FILE_READS = 25;   // arbitrarily chosen based on trial-and-error
-	var MIN_FILES_FOR_WORKERS = 25;     // also arbitrarily chosen based on trial-and-error
+	var MIN_FILES_FOR_WORKERS = 35;     // also arbitrarily chosen based on trial-and-error
 	var NO_WORKERS = null;
 	var WORKER_OPTIONS = {
-		maxConcurrentWorkers: NUM_CPUS - 1
+		// Number of workers chosen based on trial-and-error.
+		// Needs to be at least one, though, or worker-farm will behave badly...
+		// ...and one worker is just pointless overhead, so the minimum is set to two.
+		maxConcurrentWorkers: Math.max(2, NUM_CPUS - 1)
 	};
 
 	exports.validateSource = function(sourceCode, options, globals, name, callback) {
