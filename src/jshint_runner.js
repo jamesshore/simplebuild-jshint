@@ -62,14 +62,6 @@
 		}
 	};
 
-	function reportErrors(errors, name) {
-		name = name ? name + " " : "";
-		console.log("\n" + name + "failed");
-		errorTranslator.translate(errors).forEach(function(errorLine) {
-			console.log(errorLine);
-		});
-	}
-
 	function runJsHint(workers, sourceCode, options, globals, name, callback) {
 		var parameters = {
 			sourceCode: sourceCode,
@@ -86,6 +78,14 @@
 			if (!result.pass) reportErrors(result.errors, name);
 			return callback(null, result.pass);
 		}
+	}
+
+	function reportErrors(errors, name) {
+		name = name ? name + " " : "";
+		console.log("\n" + name + "failed");
+		errorTranslator.translate(errors).forEach(function(errorLine) {
+			console.log(errorLine);
+		});
 	}
 
 })();
