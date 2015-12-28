@@ -1,6 +1,6 @@
 // Copyright (c) 2012-2015 Titanium I.T. LLC. All rights reserved. For license, see "README" or "LICENSE" file.
 
-/* Run JSHint and print output to console */
+/* Run JSHint and print results to console */
 
 (function() {
 	"use strict";
