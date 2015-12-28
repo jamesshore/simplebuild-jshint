@@ -9,9 +9,16 @@
 	var fs = require("fs");
 	var async = require("async");
 	var errorTranslator = require("./error_translator.js");
+	var workerFarm = require("worker-farm");
+	var os = require("os");
 
+	var NUM_CPUS = os.cpus().length;
+	var MAX_PARALLEL_FILE_READS = 25;   // arbitrarily chosen based on trial-and-error
+	var MIN_FILES_FOR_WORKERS = 25;     // also arbitrarily chosen based on trial-and-error
 	var NO_WORKERS = null;
-	var MAX_PARALLEL_FILE_READS = 25;
+	var WORKER_OPTIONS = {
+		maxConcurrentWorkers: NUM_CPUS - 1
+	};
 
 	exports.validateSource = function(sourceCode, options, globals, name, callback) {
 		runJsHint(NO_WORKERS, sourceCode, options, globals, name, callback);
@@ -26,6 +33,11 @@
 	};
 
 	exports.validateFileList = function(fileList, options, globals, callback) {
+		// This worker stuff is completely untested. I'll need to figure that out at some point.
+		var workers = (fileList.length >= MIN_FILES_FOR_WORKERS) ?
+			workerFarm(WORKER_OPTIONS, require.resolve("./forkable_jshint_wrapper")) :
+			NO_WORKERS;
+
 		async.mapLimit(fileList, MAX_PARALLEL_FILE_READS, mapIt, reduceIt);
 
 		function mapIt(filename, mapItCallback) {
@@ -33,11 +45,12 @@
 				if (err) return mapItCallback(err);
 
 				process.stdout.write(".");
-				runJsHint(NO_WORKERS, sourceCode, options, globals, filename, mapItCallback);
+				runJsHint(workers, sourceCode, options, globals, filename, mapItCallback);
 			});
 		}
 
 		function reduceIt(err, results) {
+			if (workers) workerFarm.end(workers);
 			if (err) return callback(err);
 
 			var pass = results.reduce(function(pass, result) {
