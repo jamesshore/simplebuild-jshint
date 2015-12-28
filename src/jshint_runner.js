@@ -39,8 +39,8 @@
 		async.mapLimit(fileList, MAX_PARALLEL_FILE_READS, mapIt, reduceIt);
 
 		function mapIt(filename, mapCallback) {
-			process.stdout.write(".");
 			fs.readFile(filename, "utf8", function(err, sourceCode) {
+				process.stdout.write(".");
 				if (err) return mapCallback(err);
 				return mapCallback(null, exports.validateSource(sourceCode, options, globals, filename));
 			});
