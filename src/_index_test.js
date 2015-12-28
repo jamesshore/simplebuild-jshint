@@ -206,18 +206,6 @@ describe("Simplebuild module", function() {
 		return Array.prototype.slice.call(args);
 	}
 
-	function assertSuccess() {
-		if (successArgs === null) throw new Error("Expected success callback to be called");
-		if (failureArgs !== null) throw new Error("Did not expect failure callback to be called");
-		assert.deepEqual(successArgs, []);
-	}
-
-	function assertFailure(failureMessage) {
-		if (failureArgs === null) throw new Error("Expected failure callback to be called");
-		if (successArgs !== null) throw new Error("Did not expect success callback to be called");
-		if (failureMessage !== undefined) assert.deepEqual(failureArgs, [ failureMessage ]);
-	}
-
 	function expectSuccess(done, files) {
 		return function() {
 			if (files) files.delete();
