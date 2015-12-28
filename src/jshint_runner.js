@@ -37,7 +37,8 @@
 
 	exports.validateFileList = function(fileList, options, globals, callback) {
 		// This worker stuff is completely untested. I'll need to figure that out at some point.
-		var workers = (fileList.length >= MIN_FILES_FOR_WORKERS) ?
+		// We don't use workers if there's only one CPU because the overhead overrides the benefit.
+		var workers = (fileList.length >= MIN_FILES_FOR_WORKERS && NUM_CPUS > 1) ?
 			workerFarm(WORKER_OPTIONS, require.resolve("./forkable_jshint_wrapper")) :
 			NO_WORKERS;
 
